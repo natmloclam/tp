@@ -1,7 +1,5 @@
 # About us
 
-
-
 Display |    Name     |               Github Profile                | Portfolio 
 --------|:-----------:|:-------------------------------------------:|:---------:
 ![](https://via.placeholder.com/100.png?text=Photo) |  Xu Zihao   |        [Github](https://github.com/)        | [Portfolio](docs/team/zihaoalt.md)
@@ -9,4 +7,3 @@ Display |    Name     |               Github Profile                | Portfolio
 ![](https://via.placeholder.com/100.png?text=Photo) | Kushal Shah | [Github](https://github.com/kushalshah0402) | [Portfolio](docs/team/kushal.md)
 ![](https://via.placeholder.com/100.png?text=Photo) |   malcolm   |        [Github](https://github.com/)        | [Portfolio](docs/team/natmloclam.md)
 ![](https://via.placeholder.com/100.png?text=Photo) | Lee Kuan Yi |   [Github](https://github.com/AK47ofCode)   | [Portfolio](docs/team/kuanyi.md)
-
