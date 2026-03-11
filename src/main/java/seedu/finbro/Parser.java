@@ -65,7 +65,6 @@ public class Parser {
             ui.showAllExpenses(expenses.getAll());
         } else if (input.startsWith(COMMAND_VIEW + " ")) {
             String category = input.substring((COMMAND_VIEW + " ").length());
-            System.out.println(category);
             if (expenses.getCategoryExpenses(category).isEmpty()) {
                 throw new FinbroException("Current View Category only supports exact matches, or empty category.");
             }
