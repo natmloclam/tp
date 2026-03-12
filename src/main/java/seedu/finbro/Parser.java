@@ -113,13 +113,19 @@ public class Parser {
         }
 
         int limit = 0;
+        // check if limit is of valid type
         try {
             limit = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
             throw new FinbroException("Monthly spending limit must be a number");
         }
 
-        Limit.setLimit(limit);
+        // check if limit is a valid value
+        if (limit < 0) {
+            throw new FinbroException("Monthly spending limit must be at least $0");
+        }
+
+        Limit.setLimit(limit, ui);
         ui.showLimit();
     }
 }

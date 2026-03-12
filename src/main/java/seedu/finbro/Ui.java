@@ -68,8 +68,17 @@ public class Ui {
 
     public void showLimit() {
         showLine();
-        System.out.println("Monthly budget limit: " + String.format("%.2f", Limit.getLimit()));
+        System.out.println("Monthly budget limit: " + String.format("$%.2f", Limit.getLimit()));
         showLine();
+    }
+
+    public void showChangeLimitWarning(double limit) {
+        System.out.println("Are you sure you want to change your monthly budget limit to "
+                +  String.format("$%.2f", Limit.getLimit()) + "? [yes/no]");
+    }
+
+    public void showCancelChangeLimitMessage() {
+        System.out.println("Monthly budget limit was not changed");
     }
 
     private void showLine() {
