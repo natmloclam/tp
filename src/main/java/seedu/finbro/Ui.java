@@ -1,6 +1,7 @@
 package seedu.finbro;
 
 import seedu.finbro.commands.Expense;
+import seedu.finbro.commands.Limit;
 
 import java.util.List;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 public class Ui {
     private static final String LINE = "--------------------------------------------------";
     private final Scanner scanner = new Scanner(System.in);
+
     public void showWelcome() {
         showLine();
         System.out.println("Hello Finbro here for you!");
@@ -63,6 +65,21 @@ public class Ui {
             }
         }
         showLine();
+    }
+
+    public void showLimit() {
+        showLine();
+        System.out.println("Monthly budget limit: " + String.format("$%.2f", Limit.getLimit()));
+        showLine();
+    }
+
+    public void showChangeLimitWarning(double limit) {
+        System.out.println("Are you sure you want to change your monthly budget limit to "
+                + String.format("$%.2f", limit) + "? [yes/no]");
+    }
+
+    public void showCancelChangeLimitMessage() {
+        System.out.println("Monthly budget limit was not changed");
     }
 
     private void showLine() {
