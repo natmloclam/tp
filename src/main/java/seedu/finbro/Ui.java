@@ -1,6 +1,7 @@
 package seedu.finbro;
 
 import seedu.finbro.commands.Expense;
+import seedu.finbro.commands.Limit;
 
 import java.util.List;
 import java.util.Scanner;
@@ -62,6 +63,12 @@ public class Ui {
                 System.out.println();
             }
         }
+        showLine();
+    }
+
+    public void showLimit() {
+        showLine();
+        System.out.println("Monthly budget limit: " + String.format("%.2f", Limit.getLimit()));
         showLine();
     }
 

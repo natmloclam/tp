@@ -1,6 +1,7 @@
 package seedu.finbro;
 
 import seedu.finbro.commands.Expense;
+import seedu.finbro.commands.Limit;
 import seedu.finbro.exception.FinbroException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,8 @@ public class Parser {
     private static final String COMMAND_ADD = "add";
     private static final String COMMAND_VIEW = "view";
     private static final String COMMAND_DELETE = "delete";
+    private static final String COMMAND_SET_LIMIT = "limit";
+
     public static void parse(String input, ExpenseList expenses, Ui ui) throws FinbroException {
         input = input.trim();
 
@@ -31,6 +34,12 @@ public class Parser {
             handleDelete(input, expenses, ui);
             return;
         }
+
+        if (input.startsWith(COMMAND_SET_LIMIT)) {
+            handleSetLimit(input, expenses, ui);
+            return;
+        }
+
         throw new FinbroException("Invalid command.");
     }
 
@@ -94,5 +103,23 @@ public class Parser {
         } catch (NumberFormatException e) {
             throw new FinbroException("Expense number must be a number.");
         }
+    }
+
+    private static void handleSetLimit(String input, ExpenseList expenses, Ui ui) throws FinbroException {
+        String[] parts = input.split(" ", 2);
+        if (parts.length < 2) {
+            ui.showLimit();
+            return;
+        }
+
+        int limit = 0;
+        try {
+            limit = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            throw new FinbroException("Monthly spending limit must be a number");
+        }
+
+        Limit.setLimit(limit);
+        ui.showLimit();
     }
 }
