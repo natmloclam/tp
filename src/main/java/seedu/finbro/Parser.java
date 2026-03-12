@@ -12,6 +12,7 @@ public class Parser {
     private static final String COMMAND_VIEW = "view";
     private static final String COMMAND_DELETE = "delete";
     private static final String COMMAND_SET_LIMIT = "limit";
+    private static final String COMMAND_EDIT = "edit";
 
     public static void parse(String input, ExpenseList expenses, Ui ui) throws FinbroException {
         input = input.trim();
@@ -37,6 +38,10 @@ public class Parser {
 
         if (input.startsWith(COMMAND_SET_LIMIT)) {
             handleSetLimit(input, ui);
+            return;
+        }
+        if (input.equals(COMMAND_EDIT + " " + COMMAND_SET_LIMIT)) {
+            handleEditLimit(ui);
             return;
         }
 
@@ -126,6 +131,30 @@ public class Parser {
         }
 
         Limit.setLimit(limit, ui);
+        ui.showLimit();
+    }
+
+    private static void handleEditLimit(Ui ui) throws FinbroException {
+        // show current/original limit
+        ui.showLimit();
+
+        System.out.println("Enter the new monthly spending limit:");
+
+        String input = ui.readCommand().trim();
+
+        int newLimit;
+
+        try {
+            newLimit = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new FinbroException("Monthly spending limit must be a number");
+        }
+
+        if (newLimit < 0) {
+            throw new FinbroException("Monthly spending limit must be at least $0");
+        }
+
+        Limit.setLimit(newLimit, ui);
         ui.showLimit();
     }
 }
