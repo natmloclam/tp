@@ -14,12 +14,9 @@ public class Parser {
     private static final String COMMAND_SET_LIMIT = "limit";
     private static final String COMMAND_EDIT = "edit";
 
+
     public static void parse(String input, ExpenseList expenses, Ui ui) throws FinbroException {
         input = input.trim();
-
-        if (input == null) {
-            throw new FinbroException("Invalid command.");
-        }
 
         if (input.equals(COMMAND_ADD)) {
             throw new FinbroException("Usage: add <amount> <category> <date>");
@@ -121,7 +118,7 @@ public class Parser {
             return;
         }
 
-        int limit = 0;
+        int limit;
         // check if limit is of valid type
         try {
             limit = Integer.parseInt(parts[1]);
