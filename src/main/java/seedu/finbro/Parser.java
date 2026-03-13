@@ -117,11 +117,11 @@ public class Parser {
             ui.showLimit();
             return;
         }
-
-        int limit;
+      
+        double limit;
         // check if limit is of valid type
         try {
-            limit = Integer.parseInt(parts[1]);
+            limit = Double.parseDouble(parts[1]);
         } catch (NumberFormatException e) {
             throw new FinbroException("Monthly spending limit must be a number");
         }
