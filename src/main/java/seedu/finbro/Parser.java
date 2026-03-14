@@ -12,6 +12,8 @@ public class Parser {
     private static final String COMMAND_VIEW = "view";
     private static final String COMMAND_DELETE = "delete";
     private static final String COMMAND_SET_LIMIT = "limit";
+    private static final String COMMAND_EDIT = "edit";
+
 
     public static void parse(String input, ExpenseList expenses, Ui ui) throws FinbroException {
         input = input.trim();
@@ -37,6 +39,10 @@ public class Parser {
 
         if (input.startsWith(COMMAND_SET_LIMIT)) {
             handleSetLimit(input, ui);
+            return;
+        }
+        if (input.equals(COMMAND_EDIT + " " + COMMAND_SET_LIMIT)) {
+            handleEditLimit(ui);
             return;
         }
 
@@ -111,8 +117,8 @@ public class Parser {
             ui.showLimit();
             return;
         }
-
-        double limit = 0;
+      
+        double limit;
         // check if limit is of valid type
         try {
             limit = Double.parseDouble(parts[1]);
@@ -127,5 +133,52 @@ public class Parser {
 
         Limit.setLimit(limit, ui);
         ui.showLimit();
+    }
+
+    private static void handleEditLimit(Ui ui) throws FinbroException {
+        double currentLimit = Limit.getLimit();
+
+        ui.showLimitEditMenu(currentLimit);
+        String choice = ui.readCommand().trim();
+
+        double newLimit;
+
+        switch (choice) {
+        case "1":
+            ui.showEnterAmountPrompt("increase");
+            newLimit = currentLimit + parsePositiveAmount(ui.readCommand().trim());
+            break;
+        case "2":
+            ui.showEnterAmountPrompt("decrease");
+            newLimit = currentLimit - parsePositiveAmount(ui.readCommand().trim());
+            if (newLimit < 0) {
+                throw new FinbroException("Monthly spending limit must be at least $0");
+            }
+            break;
+        case "3":
+            ui.showEnterAmountPrompt("replace");
+            newLimit = parsePositiveAmount(ui.readCommand().trim());
+            break;
+        default:
+            throw new FinbroException("Please enter 1, 2, or 3.");
+        }
+
+        Limit.setLimit(newLimit, ui);
+        ui.showLimit();
+    }
+
+    private static double parsePositiveAmount(String input) throws FinbroException {
+        double amount;
+        try {
+            amount = Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            throw new FinbroException("Monthly spending limit must be a number");
+        }
+
+        if (amount < 0) {
+            throw new FinbroException("Monthly spending limit must be at least $0");
+        }
+
+        return amount;
     }
 }
