@@ -1,6 +1,6 @@
-package seedu.finbro.commands;
+package seedu.finbro.utils;
 
-import seedu.finbro.Ui;
+import seedu.finbro.ui.Ui;
 
 public class Limit {
     private static double limit = 0;

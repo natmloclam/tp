@@ -1,6 +1,8 @@
 package seedu.finbro.commands;
 
 import org.junit.jupiter.api.Test;
+import seedu.finbro.utils.Expense;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ExpenseTest {

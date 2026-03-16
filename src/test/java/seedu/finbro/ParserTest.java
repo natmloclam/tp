@@ -1,7 +1,10 @@
 package seedu.finbro;
 
 import org.junit.jupiter.api.Test;
-import seedu.finbro.commands.Limit;
+import seedu.finbro.parser.Parser;
+import seedu.finbro.ui.Ui;
+import seedu.finbro.utils.ExpenseList;
+import seedu.finbro.utils.Limit;
 import seedu.finbro.exception.FinbroException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
