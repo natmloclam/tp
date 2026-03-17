@@ -17,32 +17,36 @@ public class Parser {
 
     public static Command parse(String input, ExpenseList expenses, Ui ui, Storage storage) throws FinbroException {
         input = input.trim();
+        String[] parts = input.split("\\s+", 2);
+        String commandWord = parts[0];
 
-        if (input.equals(COMMAND_ADD)) {
-            throw new FinbroException("Usage: add <amount> <category> <date>");
-        }
+        switch (commandWord) {
+            case COMMAND_HELP:
+                return new HelpCommand();
 
-        if (input.startsWith(COMMAND_HELP)) {
-            return new HelpCommand();
-        }
+            case COMMAND_ADD:
+                if (input.equals(COMMAND_ADD)) {
+                    throw new FinbroException("Usage: add <amount> <category> <date>");
+                }
+                return new AddCommand();
 
-        if (input.startsWith(COMMAND_ADD + " ")) {
-            return new AddCommand();
-        }
+            case COMMAND_VIEW:
+                return new ViewCommand();
 
-        if (input.startsWith(COMMAND_VIEW)) {
-            return new ViewCommand();
-        }
+            case COMMAND_DELETE:
+                return new DeleteCommand();
 
-        if (input.startsWith(COMMAND_DELETE)) {
-            return new DeleteCommand();
-        }
+            case COMMAND_SET_LIMIT:
+                return new SetLimitCommand();
 
-        if (input.startsWith(COMMAND_SET_LIMIT)) {
-            return new SetLimitCommand();
-        }
-        if (input.equals(COMMAND_EDIT + " " + COMMAND_SET_LIMIT)) {
-            return  new EditLimitCommand();
+            case COMMAND_EDIT:
+                if (parts.length > 1 && parts[1].equals(COMMAND_SET_LIMIT)) {
+                    return new EditLimitCommand();
+                }
+                break;
+
+            default:
+                break;
         }
 
         throw new FinbroException("Invalid command.");

@@ -47,6 +47,6 @@ public class AddCommand extends Command {
                 Adds a new expense entry.
                 Format: add <amount> <category> <date>
                 Use: Records an expense under the given category on the given date.
-                Note: amount must be positive and date must be in dd/MM/yyyy format.""";
+                Note: amount must be positive and date must be in yyyy-mm-dd format.""";
     }
 }
