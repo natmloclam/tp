@@ -3,7 +3,13 @@ package seedu.finbro.parser;
 import seedu.finbro.utils.ExpenseList;
 import seedu.finbro.storage.Storage;
 import seedu.finbro.ui.Ui;
-import seedu.finbro.commands.*;
+import seedu.finbro.commands.AddCommand;
+import seedu.finbro.commands.Command;
+import seedu.finbro.commands.DeleteCommand;
+import seedu.finbro.commands.EditLimitCommand;
+import seedu.finbro.commands.HelpCommand;
+import seedu.finbro.commands.SetLimitCommand;
+import seedu.finbro.commands.ViewCommand;
 import seedu.finbro.exception.FinbroException;
 
 public class Parser {
@@ -21,32 +27,32 @@ public class Parser {
         String commandWord = parts[0];
 
         switch (commandWord) {
-            case COMMAND_HELP:
-                return new HelpCommand();
+        case COMMAND_HELP:
+            return new HelpCommand();
 
-            case COMMAND_ADD:
-                if (input.equals(COMMAND_ADD)) {
-                    throw new FinbroException("Usage: add <amount> <category> <date>");
-                }
-                return new AddCommand();
+        case COMMAND_ADD:
+            if (input.equals(COMMAND_ADD)) {
+                throw new FinbroException("Usage: add <amount> <category> <date>");
+            }
+            return new AddCommand();
 
-            case COMMAND_VIEW:
-                return new ViewCommand();
+        case COMMAND_VIEW:
+            return new ViewCommand();
 
-            case COMMAND_DELETE:
-                return new DeleteCommand();
+        case COMMAND_DELETE:
+            return new DeleteCommand();
 
-            case COMMAND_SET_LIMIT:
-                return new SetLimitCommand();
+        case COMMAND_SET_LIMIT:
+            return new SetLimitCommand();
 
-            case COMMAND_EDIT:
-                if (parts.length > 1 && parts[1].equals(COMMAND_SET_LIMIT)) {
-                    return new EditLimitCommand();
-                }
-                break;
+        case COMMAND_EDIT:
+            if (parts.length > 1 && parts[1].equals(COMMAND_SET_LIMIT)) {
+                return new EditLimitCommand();
+            }
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         throw new FinbroException("Invalid command.");

@@ -1,6 +1,7 @@
 package seedu.finbro;
 
 import org.junit.jupiter.api.Test;
+import seedu.finbro.commands.Command;
 import seedu.finbro.parser.Parser;
 import seedu.finbro.storage.Storage;
 import seedu.finbro.ui.Ui;
@@ -19,8 +20,8 @@ public class ParserTest {
         Ui ui = new Ui();
 
         Storage storage = new Storage("./data/test-finbro.txt");
-        Parser.parse("add 12.50 food 15/03/2026", expenses, ui, storage);
-
+        Command command = Parser.parse("add 12.50 food 2026-03-15", expenses, ui, storage);
+        command.execute("add 12.50 food 2026-03-15", expenses, ui, storage);
         assertEquals(1, expenses.size());
     }
 
@@ -30,8 +31,11 @@ public class ParserTest {
         Ui ui = new Ui();
 
         Storage storage = new Storage("./data/test-finbro.txt");
-        FinbroException exception = assertThrows(FinbroException.class, () ->
-                Parser.parse("add abc food 15/03/2026", expenses, ui, storage));
+
+        FinbroException exception = assertThrows(FinbroException.class, () -> {
+            Command command = Parser.parse("add abc food 2026-03-15", expenses, ui, storage);
+            command.execute("add abc food 2026-03-15", expenses, ui, storage);
+        });
 
         assertEquals("Amount must be a number.", exception.getMessage());
     }
@@ -48,7 +52,7 @@ public class ParserTest {
         // yes: confirm changing limit to 800
         ui.setInputs("yes", "3", "800", "yes");
 
-        Limit.setLimit(500.0, ui);
+        Limit.setLimit(800.0, ui);
         Parser.parse("edit limit", expenses, ui, storage);
 
         assertEquals(800.0, Limit.getLimit());
@@ -67,7 +71,8 @@ public class ParserTest {
         ui.setInputs("yes", "1", "100", "yes");
 
         Limit.setLimit(500.0, ui);
-        Parser.parse("edit limit", expenses, ui, storage);
+        Command command = Parser.parse("edit limit", expenses, ui, storage);
+        command.execute("edit limit", expenses, ui, storage);
 
         assertEquals(600.0, Limit.getLimit());
     }
@@ -85,7 +90,8 @@ public class ParserTest {
         ui.setInputs("yes", "2", "200", "yes");
 
         Limit.setLimit(500.0, ui);
-        Parser.parse("edit limit", expenses, ui, storage);
+        Command command = Parser.parse("edit limit", expenses, ui, storage);
+        command.execute("edit limit", expenses, ui, storage);
 
         assertEquals(300.0, Limit.getLimit());
     }

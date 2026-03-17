@@ -2,8 +2,9 @@ package seedu.finbro;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import seedu.finbro.commands.Expense;
-import seedu.finbro.commands.Limit;
+import seedu.finbro.utils.Expense;
+import seedu.finbro.utils.ExpenseList;
+import seedu.finbro.utils.Limit;
 import seedu.finbro.exception.FinbroException;
 import java.util.ArrayList;
 import java.util.List;

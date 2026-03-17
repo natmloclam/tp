@@ -18,23 +18,23 @@ public class EditLimitCommand extends Command {
         double newLimit;
 
         switch (choice) {
-            case "1":
-                ui.showEnterAmountPrompt("increase");
-                newLimit = currentLimit + Parser.parsePositiveAmount(ui.readCommand().trim());
-                break;
-            case "2":
-                ui.showEnterAmountPrompt("decrease");
-                newLimit = currentLimit - Parser.parsePositiveAmount(ui.readCommand().trim());
-                if (newLimit < 0) {
-                    throw new FinbroException("Monthly spending limit must be at least $0");
-                }
-                break;
-            case "3":
-                ui.showEnterAmountPrompt("replace");
-                newLimit = Parser.parsePositiveAmount(ui.readCommand().trim());
-                break;
-            default:
-                throw new FinbroException("Please enter 1, 2, or 3.");
+        case "1":
+            ui.showEnterAmountPrompt("increase");
+            newLimit = currentLimit + Parser.parsePositiveAmount(ui.readCommand().trim());
+            break;
+        case "2":
+            ui.showEnterAmountPrompt("decrease");
+            newLimit = currentLimit - Parser.parsePositiveAmount(ui.readCommand().trim());
+            if (newLimit < 0) {
+                throw new FinbroException("Monthly spending limit must be at least $0");
+            }
+            break;
+        case "3":
+            ui.showEnterAmountPrompt("replace");
+            newLimit = Parser.parsePositiveAmount(ui.readCommand().trim());
+            break;
+        default:
+            throw new FinbroException("Please enter 1, 2, or 3.");
         }
 
         Limit.setLimit(newLimit, ui);
