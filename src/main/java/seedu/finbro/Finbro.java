@@ -1,7 +1,12 @@
 package seedu.finbro;
 
-import seedu.finbro.commands.Expense;
+import seedu.finbro.commands.Command;
+import seedu.finbro.parser.Parser;
+import seedu.finbro.storage.Storage;
+import seedu.finbro.ui.Ui;
+import seedu.finbro.utils.Expense;
 import seedu.finbro.exception.FinbroException;
+import seedu.finbro.utils.ExpenseList;
 
 import java.util.List;
 
@@ -37,7 +42,8 @@ public class Finbro {
                     ui.showGoodbye();
                     isExit = true;
                 } else {
-                    Parser.parse(input, expenses, ui);
+                    Command command = Parser.parse(input, expenses, ui, storage);
+                    command.execute(input, expenses, ui, storage);
                     storage.save(expenses.getAll());
                 }
 

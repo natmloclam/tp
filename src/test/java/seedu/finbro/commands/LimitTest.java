@@ -3,6 +3,7 @@ package seedu.finbro.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import seedu.finbro.utils.Limit;
 
 class LimitTest {
 

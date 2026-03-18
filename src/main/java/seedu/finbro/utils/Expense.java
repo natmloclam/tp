@@ -1,4 +1,4 @@
-package seedu.finbro.commands;
+package seedu.finbro.utils;
 
 public class Expense {
     private double amount;

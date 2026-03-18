@@ -1,7 +1,5 @@
-package seedu.finbro;
+package seedu.finbro.utils;
 
-import seedu.finbro.commands.Expense;
-import seedu.finbro.commands.Limit;
 import seedu.finbro.exception.FinbroException;
 
 import java.util.ArrayList;

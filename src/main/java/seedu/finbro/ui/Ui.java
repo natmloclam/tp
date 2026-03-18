@@ -1,7 +1,8 @@
-package seedu.finbro;
+package seedu.finbro.ui;
 
-import seedu.finbro.commands.Expense;
-import seedu.finbro.commands.Limit;
+import seedu.finbro.commands.Command;
+import seedu.finbro.utils.Expense;
+import seedu.finbro.utils.Limit;
 
 import java.util.List;
 import java.util.Scanner;
@@ -120,5 +121,17 @@ public class Ui {
 
     private void showLine() {
         System.out.println(LINE);
+    }
+
+    public void showCommandHelpMessage(Command command) {
+        showLine();
+        System.out.println(command.getHelpMessage());
+        showLine();
+    }
+
+    public void showHelpMessageHeader() {
+        showLine();
+        System.out.println("Welcome to help menu:");
+        showLine();
     }
 }

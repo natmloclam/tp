@@ -1,7 +1,12 @@
 package seedu.finbro;
 
 import org.junit.jupiter.api.Test;
-import seedu.finbro.commands.Limit;
+import seedu.finbro.commands.Command;
+import seedu.finbro.parser.Parser;
+import seedu.finbro.storage.Storage;
+import seedu.finbro.ui.Ui;
+import seedu.finbro.utils.ExpenseList;
+import seedu.finbro.utils.Limit;
 import seedu.finbro.exception.FinbroException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,8 +19,9 @@ public class ParserTest {
         ExpenseList expenses = new ExpenseList();
         Ui ui = new Ui();
 
-        Parser.parse("add 12.50 food 15/03/2026", expenses, ui);
-
+        Storage storage = new Storage("./data/test-finbro.txt");
+        Command command = Parser.parse("add 12.50 food 2026-03-15", expenses, ui, storage);
+        command.execute("add 12.50 food 2026-03-15", expenses, ui, storage);
         assertEquals(1, expenses.size());
     }
 
@@ -24,8 +30,12 @@ public class ParserTest {
         ExpenseList expenses = new ExpenseList();
         Ui ui = new Ui();
 
-        FinbroException exception = assertThrows(FinbroException.class, () ->
-                Parser.parse("add abc food 15/03/2026", expenses, ui));
+        Storage storage = new Storage("./data/test-finbro.txt");
+
+        FinbroException exception = assertThrows(FinbroException.class, () -> {
+            Command command = Parser.parse("add abc food 2026-03-15", expenses, ui, storage);
+            command.execute("add abc food 2026-03-15", expenses, ui, storage);
+        });
 
         assertEquals("Amount must be a number.", exception.getMessage());
     }
@@ -34,6 +44,7 @@ public class ParserTest {
     public void parse_editLimitReplace() throws FinbroException {
         ExpenseList expenses = new ExpenseList();
         TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-finbro.txt");
 
         // yes: confirm setting initial limit to 500
         // 3: choose replace
@@ -41,8 +52,8 @@ public class ParserTest {
         // yes: confirm changing limit to 800
         ui.setInputs("yes", "3", "800", "yes");
 
-        Limit.setLimit(500.0, ui);
-        Parser.parse("edit limit", expenses, ui);
+        Limit.setLimit(800.0, ui);
+        Parser.parse("edit limit", expenses, ui, storage);
 
         assertEquals(800.0, Limit.getLimit());
     }
@@ -51,6 +62,7 @@ public class ParserTest {
     public void parse_editLimitIncrease() throws FinbroException {
         ExpenseList expenses = new ExpenseList();
         TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-finbro.txt");
 
         // yes: confirm setting initial limit
         // 1: choose increase
@@ -59,7 +71,8 @@ public class ParserTest {
         ui.setInputs("yes", "1", "100", "yes");
 
         Limit.setLimit(500.0, ui);
-        Parser.parse("edit limit", expenses, ui);
+        Command command = Parser.parse("edit limit", expenses, ui, storage);
+        command.execute("edit limit", expenses, ui, storage);
 
         assertEquals(600.0, Limit.getLimit());
     }
@@ -68,6 +81,7 @@ public class ParserTest {
     public void parse_editLimitDecrease() throws FinbroException {
         ExpenseList expenses = new ExpenseList();
         TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-finbro.txt");
 
         // yes: confirm setting initial limit
         // 2: choose decrease
@@ -76,7 +90,8 @@ public class ParserTest {
         ui.setInputs("yes", "2", "200", "yes");
 
         Limit.setLimit(500.0, ui);
-        Parser.parse("edit limit", expenses, ui);
+        Command command = Parser.parse("edit limit", expenses, ui, storage);
+        command.execute("edit limit", expenses, ui, storage);
 
         assertEquals(300.0, Limit.getLimit());
     }
