@@ -23,7 +23,7 @@ public class Parser {
         String argument = filterArg(input);
 
         return switch (commandWord) {
-        case COMMAND_HELP -> new HelpCommand();
+        case COMMAND_HELP -> new HelpCommand(argument);
         case COMMAND_ADD -> new AddCommand(argument);
         case COMMAND_VIEW -> new ViewCommand(argument);
         case COMMAND_DELETE -> new DeleteCommand(argument);

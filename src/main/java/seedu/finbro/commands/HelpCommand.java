@@ -1,5 +1,6 @@
 package seedu.finbro.commands;
 
+import seedu.finbro.parser.Parser;
 import seedu.finbro.utils.CommandCatalog;
 import seedu.finbro.utils.ExpenseList;
 import seedu.finbro.storage.Storage;
@@ -7,18 +8,35 @@ import seedu.finbro.ui.Ui;
 import seedu.finbro.exception.FinbroException;
 
 public class HelpCommand extends Command {
+    private final String arg;
+
+    public HelpCommand(String arg) {
+        this.arg = arg;
+    }
+
     @Override
     public void execute(ExpenseList expenseList, Ui ui, Storage storage) throws FinbroException {
-        for (Command command: CommandCatalog.getSupportedCommands()) {
-            ui.showCommandHelpMessage(command);
+        Command command;
+        try {
+            command = Parser.parse(arg);
+        } catch (FinbroException e) {
+            ui.showHelpMessage(getHelpMessage());
+            return;
         }
+
+        ui.showCommandHelpMessage(command);
     }
 
     @Override
     public String getHelpMessage() {
         return """
-                Shows all available commands and their usage.
-                Format: help
-                Use: Type this anytime to see the full command list.""";
+               Valid Commands:
+               add - Add a new expense
+               delete - Delete an expense
+               view - View your expenses
+               limit - Set/view your monthly spending limit
+               edit limit - Edit your monthly spending limit
+               
+               Enter "help <command>" for a more detailed explanation on how to use each command""";
     }
 }
