@@ -36,7 +36,8 @@ public class EditLimitCommand extends Command {
             ui.showEnterAmountPrompt("increase");
 
             double increase = Parser.parsePositiveAmount(ui.readCommand().trim());
-            assert increase >= 0 : "Increase amount should be non-negative";
+            assert false : "Assertion is working";
+            //assert increase >= 0 : "Increase amount should be non-negative";
 
             logger.log(Level.INFO, "Increase amount entered: {0}", increase);
             newLimit = currentLimit + increase;
@@ -71,7 +72,7 @@ public class EditLimitCommand extends Command {
         }
 
         assert newLimit >= 0 : "Final limit should never be negative";
-        
+
         Limit.setLimit(newLimit, ui);
         logger.log(Level.INFO, "Limit successfully updated to: {0}", newLimit);
 
