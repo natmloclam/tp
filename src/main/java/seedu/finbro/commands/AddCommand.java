@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class AddCommand extends Command {
-    String arg;
+    private final String arg;
 
     public AddCommand(String arg) {
         this.arg = arg;

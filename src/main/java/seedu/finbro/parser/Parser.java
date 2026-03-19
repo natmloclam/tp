@@ -28,7 +28,7 @@ public class Parser {
         return switch (commandWord) {
         case COMMAND_HELP -> new HelpCommand();
         case COMMAND_ADD -> new AddCommand(argument);
-        case COMMAND_VIEW -> new ViewCommand();
+        case COMMAND_VIEW -> new ViewCommand(argument);
         case COMMAND_DELETE -> new DeleteCommand();
         case COMMAND_SET_LIMIT -> new SetLimitCommand();
         case COMMAND_EDIT -> new EditLimitCommand();

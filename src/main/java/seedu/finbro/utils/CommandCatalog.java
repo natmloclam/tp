@@ -17,7 +17,7 @@ public final class CommandCatalog {
             new DeleteCommand(),
             new EditLimitCommand(),
             new SetLimitCommand(),
-            new ViewCommand()
+            new ViewCommand("")
     );
 
     public static List<Command> getSupportedCommands() {
