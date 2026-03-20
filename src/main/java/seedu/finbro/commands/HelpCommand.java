@@ -1,7 +1,6 @@
 package seedu.finbro.commands;
 
 import seedu.finbro.parser.Parser;
-import seedu.finbro.utils.CommandCatalog;
 import seedu.finbro.utils.ExpenseList;
 import seedu.finbro.storage.Storage;
 import seedu.finbro.ui.Ui;
