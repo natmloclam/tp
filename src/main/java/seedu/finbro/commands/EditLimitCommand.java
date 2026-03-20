@@ -69,10 +69,10 @@ public class EditLimitCommand extends Command {
             logger.log(Level.WARNING, "Invalid menu choice entered: {0}", choice);
             throw new FinbroException("Please enter 1, 2, or 3.");
         }
-
         assert newLimit >= 0 : "Final limit should never be negative";
 
-        Limit.setLimit(newLimit, ui);
+        SetLimitCommand.confirmLimitChange(ui, newLimit);
+
         logger.log(Level.INFO, "Limit successfully updated to: {0}", newLimit);
 
         ui.showLimit();
