@@ -123,7 +123,7 @@ public class Ui {
 
     public void showBudgetExceeded(double limit) {
         showLine();
-        System.out.println("Alert: You have exceeded your monthly spending limit of $" 
+        System.out.println("Warning: You have exceeded your monthly spending limit of $"
                             + String.format("%.2f", limit) + "!");
         showLine();
     }
