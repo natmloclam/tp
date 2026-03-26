@@ -122,7 +122,6 @@ public class Ui {
         showLine();
     }
     //@@author Kushalshah0402
-    Kushalshah0402
     public void showBudgetExceeded(double limit) {
         showLine();
         System.out.println("Warning: You have exceeded your monthly spending limit of $"
