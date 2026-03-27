@@ -25,6 +25,7 @@ public class DeleteCommand extends Command {
 
         //Walkthrough mode
         if (arg.isBlank()) {
+            logger.log(Level.INFO, "Entering delete walkthrough mode");
             runWalkthrough(expenses, ui);
             return;
         }
@@ -84,10 +85,14 @@ public class DeleteCommand extends Command {
         while (true) {
             ui.showEnterCategoryOptionPrompt();
             category = ui.readCommand();
-            assert category != null;
+            if (category == null) {
+                logger.log(Level.WARNING, "UI returned null while reading delete category input");
+                throw new FinbroException("Failed to read category input.");
+            }
             category = category.trim();
 
             if (category.isBlank()) {
+                logger.log(Level.WARNING, "Delete walkthrough received blank category input");
                 ui.showInlineError("Category cannot be empty.");
                 continue;
             }
@@ -101,6 +106,7 @@ public class DeleteCommand extends Command {
 
             categoryList = expenses.getCategoryExpenses(category);
             if (categoryList.isEmpty()) {
+                logger.log(Level.WARNING, "Delete walkthrough category not found: \"{0}\"", category);
                 ui.showInlineError("Category " + category + " does not exist.");
                 continue;
             }
@@ -111,7 +117,10 @@ public class DeleteCommand extends Command {
         while (true) {
             ui.showEnterIndexPrompt();
             String input = ui.readCommand();
-            assert input != null;
+            if (input == null) {
+                logger.log(Level.WARNING, "UI returned null while reading delete index input");
+                throw new FinbroException("Failed to read index input.");
+            }
             input = input.trim();
 
             if (input.equalsIgnoreCase("-l")) {
@@ -135,10 +144,19 @@ public class DeleteCommand extends Command {
         Expense expense = expenses.getExpenseByCategoryIndex(categoryList, index);
         ui.showConfirmExpense(expense);
         String confirm = ui.readCommand();
+        if (confirm == null) {
+            logger.log(Level.WARNING, "UI returned null while reading delete confirmation input");
+            throw new FinbroException("Failed to read confirmation input.");
+        }
+        confirm = confirm.trim();
         if (confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("y")) {
+            logger.log(Level.INFO, "User confirmed deletion for category \"{0}\" index {1}",
+                    new Object[]{category, index});
             expense = expenses.removeByCategoryIndex(category, index);
             ui.showExpenseRemoved(expense, expenses.size());
         } else {
+            logger.log(Level.INFO, "User cancelled delete walkthrough for category \"{0}\" index {1}",
+                    new Object[]{category, index});
             ui.showCancelDeleteMessage();
         }
 
