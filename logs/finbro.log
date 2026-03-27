@@ -1,11 +1,3 @@
 2026-03-26 13:11:32 [INFO] seedu.finbro.commands.SetLimitCommand - Getting confirmation for limit change
 2026-03-26 13:11:34 [INFO] seedu.finbro.commands.SetLimitCommand - Confirmation message: "yes", limit change accepted
 2026-03-26 13:11:34 [INFO] seedu.finbro.utils.Limit - Setting limit to 29
-2026-03-27 12:31:48 [INFO] seedu.finbro.storage.Storage - Loading expenses...
-2026-03-27 12:31:48 [INFO] seedu.finbro.storage.Storage - Attempting to set limit to  29.00
-2026-03-27 12:31:48 [INFO] seedu.finbro.utils.Limit - Setting limit to 29
-2026-03-27 12:31:48 [WARNING] seedu.finbro.storage.Storage - Invalid expense format, skipping line: LIMIT | 129.00
-2026-03-27 12:32:05 [INFO] seedu.finbro.commands.SetLimitCommand - Display current limit
-2026-03-27 12:32:36 [INFO] seedu.finbro.commands.ViewCommand - Displaying all expenses
-2026-03-27 12:32:40 [INFO] seedu.finbro.commands.ViewCommand - Displaying expenses in category transport
-2026-03-27 12:32:47 [INFO] seedu.finbro.commands.ViewCommand - Displaying expenses in category transport
