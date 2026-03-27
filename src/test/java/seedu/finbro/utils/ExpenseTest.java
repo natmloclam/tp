@@ -21,7 +21,7 @@ class ExpenseTest {
         String expected = """
                          Amount: $20.00
                            Category: transport
-                           Date: 2026-06-15
+                           Date: 2026-06-15\
                         """;
 
         assertEquals(expected, e.toString());
