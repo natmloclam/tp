@@ -39,6 +39,54 @@ public class Ui {
         showLine();
     }
     //@@author Kushalshah0402
+    public void showEnterAmountPrompt() {
+        showLine();
+        System.out.println("What is your expense amount?");
+    }
+    //@@author WangZX2001
+    public void showEnterAmountPrompt(String action) {
+        switch (action) {
+        case "increase":
+            System.out.println("Enter the amount to increase by:");
+            break;
+        case "decrease":
+            System.out.println("Enter the amount to decrease by:");
+            break;
+        case "replace":
+            System.out.println("Enter the new monthly budget limit:");
+            break;
+        default:
+            System.out.println("Enter amount:");
+            break;
+        }
+    }
+    //@@author Kushalshah0402
+    public void showEnterCategoryPrompt() {
+        System.out.println("Enter the category:");
+    }
+    //@@author Kushalshah0402
+    public void showEnterDatePrompt() {
+        System.out.println("Enter the date (yyyy-MM-dd):");
+    }
+    //@@author Kushalshah0402
+    public void showConfirmExpense(Expense e) {
+        showLine();
+        System.out.println("You entered:");
+        System.out.println("  " + e);
+        System.out.println("Confirm? [yes/no]");
+    }
+    //@@author Kushalshah0402
+    public void showCancelAddMessage() {
+        showLine();
+        System.out.println("Expense not added.");
+        showLine();
+    }
+    //@@author Kushalshah0402
+    public void showInlineError(String message) {
+        System.out.println("⚠️ " + message);
+    }
+
+    //@@author Kushalshah0402
     public void showExpenseAdded(Expense e, int total) {
         showLine();
         System.out.println("Got it. I've added this expense:");
@@ -97,23 +145,7 @@ public class Ui {
         System.out.println("3. Replace limit");
         showLine();
     }
-    //@@author WangZX2001
-    public void showEnterAmountPrompt(String action) {
-        switch (action) {
-        case "increase":
-            System.out.println("Enter the amount to increase by:");
-            break;
-        case "decrease":
-            System.out.println("Enter the amount to decrease by:");
-            break;
-        case "replace":
-            System.out.println("Enter the new monthly budget limit:");
-            break;
-        default:
-            System.out.println("Enter amount:");
-            break;
-        }
-    }
+    
     //@@author Kushalshah0402
     public void showBudgetReminder(double limit) {
         showLine();
@@ -122,7 +154,6 @@ public class Ui {
         showLine();
     }
     //@@author Kushalshah0402
-    Kushalshah0402
     public void showBudgetExceeded(double limit) {
         showLine();
         System.out.println("Warning: You have exceeded your monthly spending limit of $"
