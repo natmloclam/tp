@@ -1,71 +1,150 @@
 package seedu.finbro.commands;
 
 import org.junit.jupiter.api.Test;
+import seedu.finbro.exception.FinbroException;
 import seedu.finbro.storage.Storage;
 import seedu.finbro.ui.Ui;
 import seedu.finbro.utils.ExpenseList;
 import seedu.finbro.utils.Limit;
-import seedu.finbro.exception.FinbroException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EditLimitCommandTest {
+    private static final String TEST_FILE_PATH = "./data/test-finbro.txt";
+
     //@@author WangZX2001
     @Test
     public void execute_replaceLimit_success() throws FinbroException {
         ExpenseList expenses = new ExpenseList();
         TestUi ui = new TestUi();
-        Storage storage = new Storage("./data/test-finbro.txt");
+        Storage storage = new Storage(TEST_FILE_PATH);
 
-        // 3 = replace
-        // 800 = new limit
-        // yes = confirm
         ui.setInputs("3", "800", "yes");
-
         Limit.setLimit(500.0);
 
-        EditCommand command = new EditCommand("limit");
+        EditLimitCommand command = new EditLimitCommand();
         command.execute(expenses, ui, storage);
 
         assertEquals(800.0, Limit.getLimit());
     }
+
     //@@author WangZX2001
     @Test
     public void execute_increaseLimit_success() throws FinbroException {
         ExpenseList expenses = new ExpenseList();
         TestUi ui = new TestUi();
-        Storage storage = new Storage("./data/test-finbro.txt");
+        Storage storage = new Storage(TEST_FILE_PATH);
 
-        // 1 = increase
-        // 100 = amount
-        // yes = confirm
         ui.setInputs("1", "100", "yes");
-
         Limit.setLimit(500.0);
 
-        EditCommand command = new EditCommand("limit");
+        EditLimitCommand command = new EditLimitCommand();
         command.execute(expenses, ui, storage);
 
         assertEquals(600.0, Limit.getLimit());
     }
+
     //@@author WangZX2001
     @Test
     public void execute_decreaseLimit_success() throws FinbroException {
         ExpenseList expenses = new ExpenseList();
         TestUi ui = new TestUi();
-        Storage storage = new Storage("./data/test-finbro.txt");
+        Storage storage = new Storage(TEST_FILE_PATH);
 
-        // 2 = decrease
-        // 200 = amount
-        // yes = confirm
         ui.setInputs("2", "200", "yes");
-
         Limit.setLimit(500.0);
 
-        EditCommand command = new EditCommand("limit");
+        EditLimitCommand command = new EditLimitCommand();
         command.execute(expenses, ui, storage);
 
         assertEquals(300.0, Limit.getLimit());
+    }
+
+    //@@author WangZX2001
+    @Test
+    public void execute_invalidMenuChoice_exceptionThrown() {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage(TEST_FILE_PATH);
+
+        ui.setInputs("4");
+        Limit.setLimit(500.0);
+
+        EditLimitCommand command = new EditLimitCommand();
+
+        FinbroException exception = assertThrows(FinbroException.class,
+                () -> command.execute(expenses, ui, storage));
+
+        assertEquals("Please enter 1, 2, or 3.", exception.getMessage());
+        assertEquals(500.0, Limit.getLimit());
+    }
+
+    //@@author WangZX2001
+    @Test
+    public void execute_replaceLimit_invalidAmount_exceptionThrown() {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage(TEST_FILE_PATH);
+
+        ui.setInputs("3", "abc");
+        Limit.setLimit(500.0);
+
+        EditLimitCommand command = new EditLimitCommand();
+
+        FinbroException exception = assertThrows(FinbroException.class,
+                () -> command.execute(expenses, ui, storage));
+
+        assertEquals("Monthly spending limit must be a number", exception.getMessage());
+        assertEquals(500.0, Limit.getLimit());
+    }
+
+    // New tests to improve branch coverage
+
+    //@@author WangZX2001
+    @Test
+    public void execute_choiceWithWhitespace_trimmed_success() throws FinbroException {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage(TEST_FILE_PATH);
+
+        ui.setInputs(" 1 ", "50", "yes");
+        Limit.setLimit(500.0);
+
+        EditLimitCommand command = new EditLimitCommand();
+        command.execute(expenses, ui, storage);
+
+        assertEquals(550.0, Limit.getLimit());
+    }
+
+    //@@author WangZX2001
+    @Test
+    public void execute_decreaseBelowZero_exceptionThrown() {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage(TEST_FILE_PATH);
+
+        ui.setInputs("2", "600");
+        Limit.setLimit(500.0);
+
+        EditLimitCommand command = new EditLimitCommand();
+
+        FinbroException exception = assertThrows(FinbroException.class,
+                () -> command.execute(expenses, ui, storage));
+
+        assertEquals("Monthly spending limit must be at least $0", exception.getMessage());
+        assertEquals(500.0, Limit.getLimit());
+    }
+    //@@author WangZX2001
+    @Test
+    public void getHelpMessage_returnsExpectedMessage() {
+        EditLimitCommand command = new EditLimitCommand();
+        String helpMessage = command.getHelpMessage();
+
+        assertTrue(helpMessage.contains("Edits the existing monthly spending limit."));
+        assertTrue(helpMessage.contains("Format: edit limit"));
+        assertTrue(helpMessage.contains("update the current budget limit"));
     }
     //@@author WangZX2001
     private static class TestUi extends Ui {
