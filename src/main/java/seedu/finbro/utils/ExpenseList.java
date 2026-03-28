@@ -103,17 +103,19 @@ public class ExpenseList {
         Map<YearMonth, Double> monthlyTotals =  new HashMap<>();
         for (Expense expense : expenses) {
             try {
-                YearMonth month =  parseMonth(expense);
+                YearMonth month =  parseYearMonth(expense);
                 monthlyTotals.put(month, monthlyTotals.getOrDefault(month, 0.0) + expense.amount());
             } catch (ClassCastException | NullPointerException |
                      IllegalArgumentException | UnsupportedOperationException e) {
                 throw new FinbroException("Unable to add to Map");
+            } catch (FinbroException e) {
+                continue;
             }
         }
         return monthlyTotals;
     }
 
-    public YearMonth parseMonth(Expense e) throws FinbroException {
+    public YearMonth parseYearMonth(Expense e) throws FinbroException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
 
         LocalDate parsedDate;
