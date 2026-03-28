@@ -66,7 +66,7 @@ public class CurrencyCommand extends Command {
                 Format: currency
                 Use: Prompts you to enter the source and target currencies,
                      then select an expense entry to convert.
-                Note: Only supported currencies are allowed (e.g. SGD, USD, EUR, MYR).
+                Note: Supported currencies: SGD, USD, EUR, GBP, JPY, CNY, AUD, CAD, MYR, HKD, KRW
                       Uses locally stored exchange rates (no internet required).""";
     }
 }

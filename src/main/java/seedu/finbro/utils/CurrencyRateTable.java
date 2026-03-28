@@ -9,12 +9,16 @@ public class CurrencyRateTable {
     private static final Map<String, Double> sgdToRate = new HashMap<>();
 
     static {
-        sgdToRate.put("USD", 0.74);
-        sgdToRate.put("EUR", 0.68);
-        sgdToRate.put("MYR", 3.47);
-        sgdToRate.put("GBP", 0.58);
-        sgdToRate.put("JPY", 111.20);
-        sgdToRate.put("CNY", 5.36);
+        sgdToRate.put("USD", 0.74);   // US Dollar
+        sgdToRate.put("EUR", 0.68);   // Euro
+        sgdToRate.put("GBP", 0.58);   // British Pound
+        sgdToRate.put("JPY", 111.20); // Japanese Yen
+        sgdToRate.put("CNY", 5.36);   // Chinese Yuan
+        sgdToRate.put("AUD", 1.00);   // Australian Dollar
+        sgdToRate.put("CAD", 0.99);   // Canadian Dollar
+        sgdToRate.put("MYR", 3.47);   // Malaysian Ringgit
+        sgdToRate.put("HKD", 5.78);   // Hong Kong Dollar
+        sgdToRate.put("KRW", 990.00); // South Korean Won
     }
 
     public static boolean isUnsupportedCurrency(String currency) {
