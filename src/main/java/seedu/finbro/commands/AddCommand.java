@@ -5,7 +5,7 @@ import seedu.finbro.storage.Storage;
 import seedu.finbro.ui.Ui;
 import seedu.finbro.exception.FinbroException;
 import seedu.finbro.utils.Expense;
-
+import seedu.finbro.utils.NaturalDateParser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -104,7 +104,10 @@ public class AddCommand extends Command {
             ui.showEnterDatePrompt();
             String dateInput = ui.readCommand();
             try {
-                formattedDate = verifyDate("0 0 " + dateInput);
+                LocalDate parsedDate = NaturalDateParser.parse(dateInput);
+                formattedDate = parsedDate.format(
+                        DateTimeFormatter.ofPattern("d MMMM yyyy")
+                );
                 logger.log(Level.INFO, "Valid date entered: " + formattedDate);
                 break;
             } catch (FinbroException e) {
@@ -161,22 +164,21 @@ public class AddCommand extends Command {
     }
     //@@author Kushalshah0402
     private String verifyDate(String input) throws FinbroException {
-        String[] parts = input.split(" ");
-        String inputDate = parts[2];
+        String[] parts = input.trim().split("\\s+");
 
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
-        LocalDate parsedDate;
-
-        try {
-            parsedDate = LocalDate.parse(inputDate, inputFormatter);
-        } catch (DateTimeParseException e) {
-            logger.log(Level.WARNING, "Invalid date format");
-            throw new FinbroException("Invalid date format! Use yyyy-MM-dd");
+        if (parts.length < 3) {
+            throw new FinbroException("Missing date.");
         }
 
+        String dateInput = String.join(" ",
+                java.util.Arrays.copyOfRange(parts, 2, parts.length));
+
+        LocalDate parsedDate = NaturalDateParser.parse(dateInput);
+
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
         return parsedDate.format(outputFormatter);
     }
+
     //@@author Kushalshah0402
     @Override
     public String getHelpMessage() {
