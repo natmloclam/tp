@@ -24,6 +24,8 @@ public class NaturalDateParser {
             return today.minusWeeks(1);
         case "next week":
             return today.plusWeeks(1);
+        default:
+            break;
         }
 
         if (inputDate.matches("\\d+\\s+days?\\s+ago")) {
