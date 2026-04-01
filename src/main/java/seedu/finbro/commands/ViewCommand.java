@@ -22,7 +22,19 @@ public class ViewCommand extends Command {
         this.arg = arg;
     }
 
-    //@@author Kushalshah0402 zihaoalt
+    //@@author Kushalshah0402 zihaoalt AK47ofCode
+    /**
+     * Executes the view command to display expenses based on the provided argument.
+     * The argument can specify either "all" to view all expenses, a specific category to view expenses under that category,
+     * or include a filter to sort the expenses by month, category, or amount.
+     * The method validates the argument format and handles different cases accordingly,
+     * throwing exceptions for invalid formats or categories.
+     *
+     * @param expenses The expense list to view.
+     * @param ui The UI instance to display the expenses.
+     * @param storage The storage instance (not used in this command but required by the interface).
+     * @throws FinbroException if the command format is invalid, the category name is invalid, or the filter type is invalid.
+     */
     @Override
     public void execute(ExpenseList expenses, Ui ui, Storage storage) throws FinbroException {
         ParsedViewArgument parsedArg = parseViewArgument(arg);
@@ -129,9 +141,20 @@ public class ViewCommand extends Command {
     }
 
     //@@author AK47ofCode
+    /**
+     * A record to hold the parsed arguments for the view command, including the target category and optional filter type.
+     *
+     * @param target The target category or "all" to view all expenses.
+     * @param filterType The type of filter to apply (e.g., "month", "category", "amount"), or null if no filter is specified.
+     */
     private record ParsedViewArgument(String target, String filterType) { }
 
     //@@author Kushalshah0402 zihaoalt
+    /**
+     * Provides a help message describing the usage of the view command, including how to view all expenses, view expenses by category,
+     * and how to apply filters for sorting expenses by month, category, or amount. The message also includes examples of valid command formats.
+     * @return A help message describing the usage of the view command.
+     */
     @Override
     public String getHelpMessage() {
         return """
