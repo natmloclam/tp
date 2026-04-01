@@ -19,7 +19,7 @@ class FilterServiceTest {
     void filterExpenses_month_sortsChronologically() throws FinbroException {
         List<Expense> expenses = createSampleExpenses();
 
-        List<Expense> sorted = FilterService.filterExpenses(expenses, "month");
+        List<Expense> sorted = SortService.sortExpenses(expenses, "month");
 
         assertEquals(List.of(
                 new Expense(10.0, "utilities", "5 January 2026"),
@@ -34,7 +34,7 @@ class FilterServiceTest {
     void filterExpenses_category_sortsAlphabeticallyThenAmount() throws FinbroException {
         List<Expense> expenses = createSampleExpenses();
 
-        List<Expense> sorted = FilterService.filterExpenses(expenses, "category");
+        List<Expense> sorted = SortService.sortExpenses(expenses, "category");
 
         assertEquals(List.of(
                 new Expense(20.0, "food", "15 March 2026"),
@@ -49,7 +49,7 @@ class FilterServiceTest {
     void filterExpenses_amount_sortsDescending() throws FinbroException {
         List<Expense> expenses = createSampleExpenses();
 
-        List<Expense> sorted = FilterService.filterExpenses(expenses, "amount");
+        List<Expense> sorted = SortService.sortExpenses(expenses, "amount");
 
         assertEquals(List.of(
                 new Expense(20.0, "food", "15 March 2026"),
@@ -64,13 +64,13 @@ class FilterServiceTest {
     void filterExpenses_caseInsensitiveFilterType_supported() throws FinbroException {
         List<Expense> expenses = createSampleExpenses();
 
-        List<Expense> monthSorted = FilterService.filterExpenses(expenses, "MONTH");
-        List<Expense> categorySorted = FilterService.filterExpenses(expenses, "Category");
-        List<Expense> amountSorted = FilterService.filterExpenses(expenses, "aMoUnT");
+        List<Expense> monthSorted = SortService.sortExpenses(expenses, "MONTH");
+        List<Expense> categorySorted = SortService.sortExpenses(expenses, "Category");
+        List<Expense> amountSorted = SortService.sortExpenses(expenses, "aMoUnT");
 
-        assertEquals(FilterService.filterExpenses(expenses, "month"), monthSorted);
-        assertEquals(FilterService.filterExpenses(expenses, "category"), categorySorted);
-        assertEquals(FilterService.filterExpenses(expenses, "amount"), amountSorted);
+        assertEquals(SortService.sortExpenses(expenses, "month"), monthSorted);
+        assertEquals(SortService.sortExpenses(expenses, "category"), categorySorted);
+        assertEquals(SortService.sortExpenses(expenses, "amount"), amountSorted);
     }
 
     //@@author AK47ofCode
@@ -79,20 +79,20 @@ class FilterServiceTest {
         List<Expense> expenses = createSampleExpenses();
 
         FinbroException exception = assertThrows(FinbroException.class,
-                () -> FilterService.filterExpenses(expenses, "year"));
+                () -> SortService.sortExpenses(expenses, "year"));
 
-        assertEquals("Invalid filter type. Supported filters: month, category, amount", exception.getMessage());
+        assertEquals("Invalid sort type. Supported sorts: month, category, amount", exception.getMessage());
     }
 
     //@@author AK47ofCode
     @Test
     void isValidFilterType_knownTypesTrue_unknownFalse() {
-        assertTrue(FilterService.isValidFilterType("month"));
-        assertTrue(FilterService.isValidFilterType("category"));
-        assertTrue(FilterService.isValidFilterType("amount"));
-        assertTrue(FilterService.isValidFilterType("MONTH"));
-        assertFalse(FilterService.isValidFilterType("year"));
-        assertFalse(FilterService.isValidFilterType(""));
+        assertTrue(SortService.isValidSortType("month"));
+        assertTrue(SortService.isValidSortType("category"));
+        assertTrue(SortService.isValidSortType("amount"));
+        assertTrue(SortService.isValidSortType("MONTH"));
+        assertFalse(SortService.isValidSortType("year"));
+        assertFalse(SortService.isValidSortType(""));
     }
 
     //@@author AK47ofCode
@@ -101,7 +101,7 @@ class FilterServiceTest {
         List<Expense> original = createSampleExpenses();
         List<Expense> originalSnapshot = new ArrayList<>(original);
 
-        List<Expense> sorted = FilterService.filterExpenses(original, "amount");
+        List<Expense> sorted = SortService.sortExpenses(original, "amount");
 
         assertEquals(originalSnapshot, original);
         assertNotSame(original, sorted);

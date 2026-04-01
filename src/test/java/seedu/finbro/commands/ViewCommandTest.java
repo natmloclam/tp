@@ -104,6 +104,48 @@ public class ViewCommandTest {
 
     //@@author AK47ofCode
     @Test
+    public void execute_viewCategorySortAmount_sortedByHighestAmount() throws FinbroException {
+        ExpenseList expenses = createSampleExpenses();
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("transport -sort amount").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(12.0, "transport", "3 February 2026"),
+                new Expense(4.0, "transport", "20 January 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewCategoryFilterMonthName_caseInsensitiveFiltersExpenses() throws FinbroException {
+        ExpenseList expenses = createSampleExpenses();
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("transport -filter JANUARY").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(4.0, "transport", "20 January 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewCategoryFilterAndSort_filtersThenSorts() throws FinbroException {
+        ExpenseList expenses = createSampleExpenses();
+        expenses.add(new Expense(7.0, "transport", "8 January 2026"));
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("transport -filter january -sort amount").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(7.0, "transport", "8 January 2026"),
+                new Expense(4.0, "transport", "20 January 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
     public void execute_viewCategorySortCategory_throwsException() {
         ExpenseList expenses = createSampleExpenses();
         CaptureUi ui = new CaptureUi();
@@ -112,6 +154,30 @@ public class ViewCommandTest {
                 () -> new ViewCommand("transport -sort category").execute(expenses, ui, null));
 
         assertEquals("Category sort is only supported with \"view all\".", exception.getMessage());
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewAllWithFilter_throwsException() {
+        ExpenseList expenses = createSampleExpenses();
+        CaptureUi ui = new CaptureUi();
+
+        FinbroException exception = assertThrows(FinbroException.class,
+                () -> new ViewCommand("all -filter january").execute(expenses, ui, null));
+
+        assertEquals("Month filter is only supported with \"view <category>\".", exception.getMessage());
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewCategoryInvalidFilterMonth_throwsException() {
+        ExpenseList expenses = createSampleExpenses();
+        CaptureUi ui = new CaptureUi();
+
+        FinbroException exception = assertThrows(FinbroException.class,
+                () -> new ViewCommand("transport -filter jan").execute(expenses, ui, null));
+
+        assertEquals("Invalid month for -filter: jan\nUse full month name, e.g. January.", exception.getMessage());
     }
 
     //@@author AK47ofCode
@@ -136,6 +202,18 @@ public class ViewCommandTest {
                 () -> new ViewCommand("all -sort amount -sort month").execute(expenses, ui, null));
 
         assertEquals("Invalid format: use at most one -sort tag.", exception.getMessage());
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewWithMultipleFilterTags_throwsException() {
+        ExpenseList expenses = createSampleExpenses();
+        CaptureUi ui = new CaptureUi();
+
+        FinbroException exception = assertThrows(FinbroException.class,
+                () -> new ViewCommand("transport -filter january -filter february").execute(expenses, ui, null));
+
+        assertEquals("Invalid format: use at most one -filter tag.", exception.getMessage());
     }
 
     //@@author AK47ofCode
