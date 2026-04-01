@@ -64,7 +64,7 @@ and view expenses across different currencies.
 Added documentation for:
 
 * **Edit Limit Command**
-    - Detailed behaviour and workflow
+    - Detailed behavior and workflow
     - Example interactions with confirmation step
     - Error handling explanations
 
