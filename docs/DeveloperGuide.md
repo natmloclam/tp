@@ -331,6 +331,26 @@ The following diagram illustrates the interaction between system components when
 
 ---
 
+#### Design Considerations
+
+| Principle | Benefits |
+|-----------|----------|
+| **Single command supporting two modes** | Improves usability by accommodating different user preferences. Avoids duplicating logic across multiple commands. Keeps the command interface simple. |
+| **Confirmation in walkthrough mode** | Reduces the risk of accidental deletion. Gives users a final chance to verify the selected expense before removal. |
+| **Separation of concerns** | `Ui` handles user interaction. `Parser` interprets input. `DeleteCommand` performs deletion logic. `ExpenseList` manages stored expenses. |
+
+---
+
+#### Limitations
+
+| Limitation | Impact |
+|-----------|--------|
+| Walkthrough mode requires multiple user inputs | May be slower for experienced users |
+| Direct mode requires users to know the correct category and expense number | Potential for input errors if users do not remember the exact item to remove |
+| Direct mode does not include a confirmation step | Incorrect input may lead to immediate deletion |
+
+---
+
 ## Storage Component
 
 The `Storage` class is responsible for persisting expense data and the budget limit across sessions. It reads from and writes to a local `.txt` file.
@@ -377,26 +397,6 @@ Flat file over a database
 - Sufficient for the scale of data this application handles
 
 ---
-#### Design Considerations
-
-| Principle | Benefits |
-|-----------|----------|
-| **Single command supporting two modes** | Improves usability by accommodating different user preferences. Avoids duplicating logic across multiple commands. Keeps the command interface simple. |
-| **Confirmation in walkthrough mode** | Reduces the risk of accidental deletion. Gives users a final chance to verify the selected expense before removal. |
-| **Separation of concerns** | `Ui` handles user interaction. `Parser` interprets input. `DeleteCommand` performs deletion logic. `ExpenseList` manages stored expenses. |
-
----
-
-#### Limitations
-
-| Limitation | Impact |
-|-----------|--------|
-| Walkthrough mode requires multiple user inputs | May be slower for experienced users |
-| Direct mode requires users to know the correct category and expense number | Potential for input errors if users do not remember the exact item to remove |
-| Direct mode does not include a confirmation step | Incorrect input may lead to immediate deletion |
-
----
-
 
 ## Product Scope
 

@@ -54,6 +54,7 @@ Given below are my contributions to the project.
   * Developer Guide:
     * Added implementation details for the `view` command including the UML sequence diagram (Pull request [#94](https://github.com/AY2526S2-CS2113-T10-4/tp/pull/94))
     * Added implementation details for the `add` command including the UML sequence diagram (Pull request [#92](https://github.com/AY2526S2-CS2113-T10-4/tp/pull/92))
+    * Added implementation details for the Storage component (Pull request[#96](https://github.com/AY2526S2-CS2113-T10-4/tp/pull/96))
 
 * **Contributions to team-based tasks**:
   * Set up the GitHub team organisation and repository — forked the repo 
@@ -63,3 +64,116 @@ Given below are my contributions to the project.
   * Maintained developer documentation not specific to a feature — wrote the Storage component section in the Developer Guide, covering the load/save operations, file format, and design considerations
 
 * **Community**:
+
+
+* **Contribution to the developer guide in more detail**:
+
+    ## Storage Component
+    The following is an excerpt from the Developer Guide for the Storage component that I wrote.
+
+    The `Storage` class is responsible for persisting expense data and the budget limit across sessions. It reads from and writes to a local `.txt` file.
+
+    #### Load Operation
+
+    When the application starts, `Storage.load()` is called:
+
+    1. If the file does not exist, an empty list is returned and a new file will be created on the next save
+    2. The first line is passed to `readLimit()` which checks for the `LIMIT | <value>` format and sets the budget limit via `Limit.setLimit()`
+    3. If the first line is not a limit entry, it is treated as an expense line instead
+    `. Each subsequent line is passed to `processExpenseLine()` which splits by `|` and validates the format and amount before adding to the list
+    5. Corrupted or malformed lines are logged and skipped without crashing the application
+
+    #### Save Operation
+
+    After every command, `Storage.save()` is called:
+
+    1. The budget limit is written first in the format `LIMIT | <value>`
+    2. Each expense is written in the format `amount | category | date`
+    3. The file and its parent directories are created automatically if they do not exist
+
+    #### File Format
+
+    The `finbro.txt` file follows this structure:
+
+    LIMIT | 1000.00
+
+    50.00 | food | 2026-03-01
+
+    20.00 | transport | 2026-03-02
+
+    #### Design Considerations
+
+    Corruption handling
+    - Malformed lines are skipped rather than throwing an exception
+    - Ensures a single corrupted entry does not affect the rest of the data
+    - All skipped lines are logged at WARNING or SEVERE level for debugging
+
+    Limit stored as first line
+    - Separating the limit from expense entries allows it to be read and applied before any expenses are processed
+    - Falls back gracefully if no limit line is found
+
+    Flat file over a database
+    - Keeps the application lightweight with no external dependencies
+    - Sufficient for the scale of data this application handles
+
+    ---
+
+    ---
+
+    #### View Expense Feature (Partial)
+
+    The following is an excerpt from the Developer Guide for the `view` command that I contributed to.
+
+    The `ViewCommand` class is responsible for handling both modes. When executed, the command checks the argument supplied:
+    - If argument is `all` — all expenses are retrieved and displayed
+    - If argument is a category name — only matching expenses are retrieved and displayed
+    - If argument is empty — an error is thrown
+
+    The following diagram shows the sequence of operations for the `view` command:
+
+    ![View Expense Sequence Diagram](../UML_diagrams/images/ViewCommand.png)
+
+    ---
+
+    #### Add Expense Feature (Partial)
+
+    The following is an excerpt from the Developer Guide for the `add` command that I contributed to.
+
+    The following diagram shows the sequence of operations for the `add` command:
+
+    ![Add Expense Sequence Diagram](../UML_diagrams/images/AddCommand.png)
+
+---
+* **Contribution to the user guide in more detail**:
+    ### Add Expense Command
+
+    The following is an excerpt from the User Guide for the `add` command that I wrote.
+
+    The `add` command lets you record a new expense in two modes:
+
+    **Direct Mode:**
+    ```
+    add <amount> <category> <date>
+    ```
+
+    **Walkthrough Mode:**
+    ```
+    add
+    ```
+    The system will guide you through entering the amount, category, date, and a final confirmation step.
+
+    ---
+
+    #### View Expenses
+
+    The following is an excerpt from the User Guide for the `view` command that I wrote.
+
+    The `view` command displays your recorded expenses.
+
+    `view all` — displays all recorded expenses
+
+    `view <category>` — displays expenses under a specific category
+
+    **Notes:**
+    - Categories are not case sensitive
+    - Running `view` without any argument will display an error message
