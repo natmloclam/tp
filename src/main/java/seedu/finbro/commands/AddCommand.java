@@ -42,7 +42,7 @@ public class AddCommand extends Command {
         logger.log(Level.INFO,
                 "Attempting to add expense amount {0}, category {1}, date {2}",
                 new Object[]{amount, category, formattedDate});
-
+        category = category.toLowerCase();
         Expense expense = new Expense(amount, category, formattedDate);
         assert expense != null : "Expense should not be null";
 
