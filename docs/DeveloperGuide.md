@@ -672,6 +672,11 @@ Bar graph construction:
 - The month with the largest expense is set to have `MAX_BAR_LENGTH` number of bars 
 - Other months will have a number of bars roughly equal to its proportion of the largest monthly expense
 
+[Proposed] Filter date range
+- Allow user to input a start and/or end year and month to narrow the date range of the bar graph 
+- Read additional optional arguments headed by `/by` and `/to` for start and end dates 
+- Only add expenses to the `TreeMap` if they are within the date range 
+
 ## Product Scope
 
 ### Target User Profile
