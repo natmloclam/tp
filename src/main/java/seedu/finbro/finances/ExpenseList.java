@@ -64,7 +64,7 @@ public class ExpenseList {
     public List<Expense> getCategoryExpenses(String category) {
         List<Expense> results = new ArrayList<>();
         for (Expense e : expenses) {
-            if (e.category().equals(category)) {
+            if (e.category().equalsIgnoreCase(category)) {
                 results.add(e);
             }
         }
@@ -80,7 +80,7 @@ public class ExpenseList {
         int count = 0;
         Expense targetExpense = null;
         for (Expense expense : expenses) {
-            if (expense.category().equals(category)) {
+            if (expense.category().equalsIgnoreCase(category)) {
                 count++;
             }
             if (count == number) {
