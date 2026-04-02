@@ -87,11 +87,11 @@ add <amount> <category> <date>
 |--------------|------------------|-------------------------------------------------------------|
 | **Amount**   | Positive number  | `50.00` or `25`                                             |
 | **Category** | Text (no spaces) | `Groceries`                                                 |
-| **Date**     | YYYY-MM-DD       | `202`-01-20` or `today, last week, 2 days ago, last monday` |
+| **Date**     | YYYY-MM-DD       | `2026-01-20` or `today, last week, 2 days ago, last monday` |
 
 **Example:**
 ```
-add 50.00 Groceries 202`-01-20
+add 50.00 Groceries 2026-01-20
 ```
 - Type `yes` to confirm or `no` to cancel
 
