@@ -177,7 +177,7 @@ public class AddCommand extends Command {
     }
 
     //@@author WangZX2001
-    private String verifyDate(String input) throws FinbroException {
+    public static String verifyDate(String input) throws FinbroException {
         logger.log(Level.INFO, "Verifying date from input: " + input);
         String[] parts = input.trim().split(" ");
 
