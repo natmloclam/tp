@@ -1,5 +1,7 @@
 package seedu.finbro.storage;
 
+import seedu.finbro.Finbro;
+import seedu.finbro.commands.AddCommand;
 import seedu.finbro.finances.Expense;
 import seedu.finbro.finances.Limit;
 import seedu.finbro.exception.FinbroException;
@@ -8,6 +10,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -45,6 +50,7 @@ public class Storage {
         }
         return expenses;
     }
+
     //@@author Kushalshah0402
     private void processExpenseLine(String line, List<Expense> expenses) {
         String[] parts = line.split("\\|");
@@ -57,7 +63,14 @@ public class Storage {
 
         double amount = parseAmount(parts[0].strip());
         String category = parts[1].strip();
-        String date = parts[2].strip();
+        String date = "";
+
+        try {
+            date = verifyDateFormat(parts[2].strip());
+        } catch (FinbroException e) {
+            logger.log(Level.WARNING, "Invalid date format, skipping line: {0}", line);
+            return;
+        }
 
         if (amount <= 0) {
             logger.log(Level.WARNING, "Amount must be greater than zero: {0}", line);
@@ -66,6 +79,21 @@ public class Storage {
 
         expenses.add(new Expense(amount, category, date));
     }
+
+    private String verifyDateFormat(String dateInput) throws FinbroException {
+        String formattedDate = "";
+        logger.log(Level.INFO, "Verifying date format: {0}", dateInput);
+
+        try {
+            DateTimeFormatter formatter =  DateTimeFormatter.ofPattern("d MMMM yyyy");
+            LocalDate parsedDate = LocalDate.parse(dateInput, formatter);
+            formattedDate = parsedDate.format(formatter);
+        } catch (DateTimeParseException e) {
+            throw new FinbroException("Invalid date format");
+        }
+        return formattedDate;
+    }
+
     //@@author Kushalshah0402
     private void readLimit(Scanner scanner, List<Expense> expenses) {
         if (scanner.hasNextLine()) {

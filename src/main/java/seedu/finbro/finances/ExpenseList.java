@@ -33,33 +33,42 @@ public class ExpenseList {
     //@@author Kushalshah0402 AK47ofCode
     public void add(Expense e) {
         assert e != null : "Expense to add should not be null";
+
+
         expenses.add(e);
         total += e.amount();
     }
+
     //@@author WangZX2001
     public boolean isEmpty() {
         return expenses.isEmpty();
     }
+
     //@@author WangZX2001
     public Expense get(int index) {
         return expenses.get(index);
     }
+
     //@@author Kushalshah0402
     public int size() {
         return expenses.size();
     }
+
     //@@author Kushalshah0402
     public List<Expense> getAll() {
         return expenses;
     }
+
     //@@author AK47ofCode
     public double getTotalExpenditure() {
         return total;
     }
+
     //@@author AK47ofCode
     public double getRemainingExpenditure() {
         return Limit.getLimit() - total;
     }
+
     //@@author zihaoalt
     public List<Expense> getCategoryExpenses(String category) {
         List<Expense> results = new ArrayList<>();
