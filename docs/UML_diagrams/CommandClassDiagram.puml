@@ -1,0 +1,53 @@
+@startuml
+top to bottom direction
+skinparam classAttributeIconSize 0
+skinparam ranksep 35
+skinparam nodesep 20
+hide empty members
+
+abstract class Command {
+    +execute(expenseList: ExpenseList, ui: Ui, storage: Storage)
+    +getHelpMessage(): String
+}
+
+together {
+    class AddCommand
+    class DeleteCommand
+    class ViewCommand
+    class VisualCommand
+    class SetLimitCommand
+    class CurrencyCommand
+    class EditCommand
+    class HelpCommand
+}
+
+class EditLimitCommand
+
+together {
+    class ExpenseList
+    class Ui
+    class Storage
+    class Parser
+}
+
+Command <|-- AddCommand
+Command <|-- DeleteCommand
+Command <|-- ViewCommand
+Command <|-- VisualCommand
+Command <|-- SetLimitCommand
+Command <|-- CurrencyCommand
+Command <|-- EditCommand
+Command <|-- HelpCommand
+
+Command ..> ExpenseList
+Command ..> Ui
+Command ..> Storage
+
+EditCommand ..> EditLimitCommand
+HelpCommand ..> Parser
+
+ExpenseList -[hidden]-> Ui
+Ui -[hidden]-> Storage
+EditLimitCommand -[hidden]-> Parser
+
+@enduml

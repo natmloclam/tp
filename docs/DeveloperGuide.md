@@ -26,7 +26,20 @@
 
 ## Acknowledgements
 
-*List sources of all reused/adapted ideas, code, documentation, and third-party libraries. Include links to the original source.*
+## Acknowledgements
+
+This project was developed from the Duke-style command-line application structure. The initial repository setup, Gradle-based project organisation, and documentation skeleton were adapted from the teaching materials used in CS2113.
+
+We also referenced the following SE-EDU resources during development:
+- [SE-EDU Java Coding Standards](https://se-education.org/guides/conventions/java/basic.html)
+- [Gradle Tutorial](https://se-education.org/guides/tutorials/gradle.html)
+- [JUnit Tutorial](https://se-education.org/guides/tutorials/junit.html)
+- [Checkstyle Tutorial](https://se-education.org/guides/tutorials/checkstyle.html)
+
+The project uses the following tools and libraries:
+- [Gradle](https://gradle.org/) for build automation
+- [JUnit 5](https://junit.org/junit5/) for automated testing
+- [PlantUML](https://plantuml.com/) for UML diagrams in this Developer Guide
 
 ---
 
@@ -61,6 +74,22 @@
 
 ---
 
+### Command Component
+
+The command subsystem is organised using an abstract `Command` superclass and multiple concrete subclasses such as
+`AddCommand`, `DeleteCommand`, `ViewCommand`, and `HelpCommand`. This allows the parser to return a common `Command`
+type while letting each concrete command implement its own execution logic.
+
+![Command Class Diagram](UML_diagrams/images/CommandClassDiagram.png)
+
+#### Design considerations
+
+- Using an abstract `Command` superclass provides a common interface for all commands.
+- Each concrete command encapsulates the logic for one user command.
+- This improves extensibility, because new commands can be added by introducing another subclass of `Command`.
+- Shared execution parameters such as `ExpenseList`, `Ui`, and `Storage` are passed through the `execute(...)` method.
+
+---
 ### Limit Feature
 
 #### Overview
