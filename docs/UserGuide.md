@@ -125,25 +125,100 @@ The system will ask you for:
 
 ### Examples
 
+### Examples
+
 **Example 1: Adding groceries in direct mode**
+
+Input:
 ```
 add 5.50 Groceries 2026-01-20
+yes
+```
+
+Output:
+```
+------------------------------------------------------------
+add 5.50 Groceries 2026-01-20
+------------------------------------------------------------
+You entered:
+    Amount: $5.50
+    Category: groceries
+    Date: 20 January 2026
+Confirm? [yes/no]
+yes
+------------------------------------------------------------
+Got it. I've added this expense:
+    Amount: $5.50
+    Category: groceries
+    Date: 20 January 2026
+Now you have 1 expenses.
+------------------------------------------------------------
 ```
 
 **Example 2: Adding a transport expense in walkthrough mode**
+
+Input:
 ```
 add
-> Enter amount: 15.00
-> Enter category: Transport
-> Enter the date (yyyy-MM-dd or today): 3 days ago
-> Confirm entry? (yes/no): yes
+15.00
+Transport
+3 days ago
+yes
+```
+
+Output:
+```
+------------------------------------------------------------
+add
+------------------------------------------------------------
+Enter amount:
+15.00
+Enter category:
+Transport
+Enter the date (yyyy-MM-dd or today):
+3 days ago
+You entered:
+    Amount: $15.00
+    Category: transport
+    Date: 7 April 2026
+Confirm? [yes/no]
+yes
+------------------------------------------------------------
+Got it. I've added this expense:
+    Amount: $15.00
+    Category: transport
+    Date: 7 April 2026
+Now you have 2 expenses.
+------------------------------------------------------------
 ```
 
 **Example 3: Quick coffee purchase**
+
+Input:
 ```
 add 5.00 Food yesterday
+yes
 ```
 
+Output:
+```
+------------------------------------------------------------
+add 5.00 Food yesterday
+------------------------------------------------------------
+You entered:
+    Amount: $5.00
+    Category: food
+    Date: 9 April 2026
+Confirm? [yes/no]
+yes
+------------------------------------------------------------
+Got it. I've added this expense:
+    Amount: $5.00
+    Category: food
+    Date: 9 April 2026
+Now you have 3 expenses.
+------------------------------------------------------------
+```
 ### Common Issues
 
 **❌ Error: "Amount must be a positive number"**
@@ -161,7 +236,7 @@ add 5.00 Food yesterday
 - Examples: `Food`, `Transport`, `Rent`, `Entertainment`
 
 **❌ "I made a mistake"**
-- In walkthrough mode, type `no` when asked to confirm
+- type `no` when asked to confirm
 - You can delete the expense and add a new one
 - Or use the `delete` command to remove the incorrect entry
 
@@ -220,40 +295,111 @@ The system will guide you through the deletion process step by step:
 
 ### Examples
 
+### Examples
+
 **Example 1: Deleting an expense in direct mode**
+
+Input:
 ```
 delete food 1
 ```
 
+Output:
+```
+------------------------------------------------------------
+delete food 1
+------------------------------------------------------------
+Got it. I've removed this expense:
+    Amount: $5.00
+    Category: food
+    Date: 9 April 2026
+Now you have 1 expenses.
+------------------------------------------------------------
+```
+
 **Example 2: Deleting an expense in walkthrough mode**
+
+Input:
 ```
 delete
-> Enter category name, or -l to list all categories:
 Food
-> Enter the expense index to delete, or type -l to list expenses in this category.
 2
-> Confirm delete? (yes/no):
 yes
 ```
 
+Output:
+```
+------------------------------------------------------------
+delete
+------------------------------------------------------------
+Enter category name, or -l to list all categories:
+Food
+Enter the expense index to delete, or type -l to list expenses in this category.
+2
+You entered:
+    Amount: $12.50
+    Category: food
+    Date: 12 March 2026
+Confirm? [yes/no]
+yes
+------------------------------------------------------------
+Got it. I've removed this expense:
+    Amount: $12.50
+    Category: food
+    Date: 12 March 2026
+Now you have 1 expenses.
+------------------------------------------------------------
+```
+
 **Example 3: Listing categories and expenses in walkthrough mode**
+
+Input:
 ```
 delete
-> Enter category name, or -l to list all categories:
 -l
-> Food
-> Transport
-> Shopping
-> Enter category name, or -l to list all categories:
-Food
-> What is the index of the expense you want to delete?
+groceries
 -l
-> 1. $5.00 | 2026-03-10
-> 2. $12.50 | 2026-03-12
-> What is the index of the expense you want to delete?
 1
-> Confirm delete? (yes/no):
 y
+```
+
+Output:
+```
+------------------------------------------------------------
+delete
+Enter the category, or type -l to list all categories.
+-l
+--------------------------------------------------
+Category Name : groceries
+--------------------------------------------------
+Enter the category, or type -l to list all categories.
+groceries
+--------------------------------------------------
+Enter the expense index to delete, or type -l to list expenses in this category.
+-l
+--------------------------------------------------
+Expense 1 : Amount: $5.50
+   Category: groceries
+   Date: 20 January 2026
+--------------------------------------------------
+--------------------------------------------------
+Enter the expense index to delete, or type -l to list expenses in this category.
+1
+--------------------------------------------------
+You entered:
+   Amount: $5.50
+   Category: groceries
+   Date: 20 January 2026
+Confirm? [yes/no]
+y
+--------------------------------------------------
+Got it. I've removed this expense:
+   Amount: $5.50
+   Category: groceries
+   Date: 20 January 2026
+Now you have 0 expenses.
+--------------------------------------------------
+
 ```
 
 ---
