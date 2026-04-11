@@ -64,21 +64,18 @@ public class EditLimitCommandTest {
 
     //@@author WangZX2001
     @Test
-    public void execute_invalidMenuChoice_exceptionThrown() {
+    public void execute_invalidChoice_retriesSuccessfully() throws FinbroException {
         ExpenseList expenses = new ExpenseList();
         TestUi ui = new TestUi();
         Storage storage = new Storage(TEST_FILE_PATH);
 
-        ui.setInputs("4");
+        ui.setInputs("4", "1", "100", "yes");
         Limit.setLimit(500.0);
 
         EditLimitCommand command = new EditLimitCommand();
+        command.execute(expenses, ui, storage);
 
-        FinbroException exception = assertThrows(FinbroException.class,
-                () -> command.execute(expenses, ui, storage));
-
-        assertEquals("Please enter 1, 2, or 3.", exception.getMessage());
-        assertEquals(500.0, Limit.getLimit());
+        assertEquals(600.0, Limit.getLimit());
     }
 
     //@@author WangZX2001
