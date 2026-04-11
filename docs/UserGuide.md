@@ -706,3 +706,4 @@ current limit unchanged.
 | Visualize  | `visual`                                          | Shows a bar chart of monthly expenses                           |
 | Help       | `help`                                            | Shows help information                                          |
 | Help       | `help <command>`                                  | Shows detailed help for a specific command                      |
+| Exit       | `exit`                                            | Exits Finbro                                                    |
