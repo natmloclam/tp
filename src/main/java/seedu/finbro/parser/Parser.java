@@ -37,15 +37,16 @@ public class Parser {
         String argument = filterArg(input);
 
         return switch (commandWord) {
-            case COMMAND_HELP -> new HelpCommand(argument);
-            case COMMAND_ADD -> new AddCommand(argument);
-            case COMMAND_VIEW -> new ViewCommand(argument);
-            case COMMAND_DELETE -> new DeleteCommand(argument);
-            case COMMAND_SET_LIMIT -> new SetLimitCommand(argument);
-            case COMMAND_EDIT -> new EditCommand(argument);
-            case COMMAND_VISUAL -> parseVisualCommand(argument);
-            case COMMAND_CURRENCY -> parseCurrencyCommand(argument);
-            default -> throw new FinbroException("Invalid command.");
+        case COMMAND_HELP -> new HelpCommand(argument);
+        case COMMAND_ADD -> new AddCommand(argument);
+        case COMMAND_VIEW -> new ViewCommand(argument);
+        case COMMAND_DELETE -> new DeleteCommand(argument);
+        case COMMAND_SET_LIMIT -> new SetLimitCommand(argument);
+        case COMMAND_EDIT -> new EditCommand(argument);
+        case COMMAND_VISUAL -> parseVisualCommand(argument);
+        case COMMAND_CURRENCY -> parseCurrencyCommand(argument);
+        
+        default -> throw new FinbroException("Invalid command.");
         };
     }
 
