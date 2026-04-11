@@ -282,16 +282,20 @@ The system will guide you through the deletion process step by step:
     - Enter the category of the expense you want to delete
     - The category must already exist
     - Type `-l` to display all existing category names
+    - Type `-exit` to cancel the delete operation
 
 2. **Expense Number**
     - Enter the index number of the expense in that category
     - The number must be a positive integer within the valid range
     - Type `-l` to display all expenses under the selected category
+    - Type `-back` to return to the category selection
+    - Type `-exit` to cancel the delete operation
 
 3. **Confirmation**
     - Review the expense to be deleted
     - Type `yes` or `y` to confirm deletion
     - Any other input cancels the deletion
+
 
 ### Examples
 
@@ -398,6 +402,48 @@ Got it. I've removed this expense:
    Category: groceries
    Date: 20 January 2026
 Now you have 0 expenses.
+--------------------------------------------------
+```
+**Example 4: Using `-back` to re-choose a category**
+
+Input:
+```
+delete
+food
+-back
+transport
+1
+y
+```
+Output:
+```
+--------------------------------------------------
+delete
+--------------------------------------------------
+Enter the category, or type -l to list all categories or -exit to cancel.
+food
+--------------------------------------------------
+Enter the expense index to delete, type -l to list expenses, -back to return to category selection, or -exit to cancel.
+-back
+--------------------------------------------------
+Enter the category, or type -l to list all categories or -exit to cancel.
+transport
+--------------------------------------------------
+Enter the expense index to delete, type -l to list expenses, -back to return to category selection, or -exit to cancel.
+1
+--------------------------------------------------
+You entered:
+   Amount: $5.00
+   Category: transport
+   Date: 11 April 2026
+Confirm? [yes/no]
+y
+--------------------------------------------------
+Got it. I've removed this expense:
+   Amount: $5.00
+   Category: transport
+   Date: 11 April 2026
+Now you have 1 expenses.
 --------------------------------------------------
 
 ```

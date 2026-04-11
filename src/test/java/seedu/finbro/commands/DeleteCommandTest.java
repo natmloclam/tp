@@ -207,6 +207,123 @@ public class DeleteCommandTest {
         assertEquals(1, ui.expenseRemovedShownCount);
     }
     //@@author zihaoalt
+    @Test
+    public void execute_walkthroughExitInCategoryLoop_expenseNotDeleted() throws FinbroException {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-delete-finbro.txt");
+
+        expenses.add(new Expense(12.50, "food", "2026-03-28"));
+
+        ui.setInputs("-exit");
+
+        DeleteCommand command = new DeleteCommand("");
+        command.execute(expenses, ui, storage);
+
+        assertEquals(1, expenses.size());
+        assertEquals(0, ui.confirmExpenseShownCount);
+        assertEquals(0, ui.expenseRemovedShownCount);
+        assertEquals(0, ui.cancelDeleteShownCount);
+    }
+
+    //@@author zihaoalt
+    @Test
+    public void execute_walkthroughExitInIndexLoop_expenseNotDeleted() throws FinbroException {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-delete-finbro.txt");
+
+        expenses.add(new Expense(12.50, "food", "2026-03-28"));
+
+        ui.setInputs("food", "-exit");
+
+        DeleteCommand command = new DeleteCommand("");
+        command.execute(expenses, ui, storage);
+
+        assertEquals(1, expenses.size());
+        assertEquals(0, ui.confirmExpenseShownCount);
+        assertEquals(0, ui.expenseRemovedShownCount);
+    }
+
+    //@@author zihaoalt
+    @Test
+    public void execute_walkthroughBackInIndexLoop_returnsToCategoryThenDeletes() throws FinbroException {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-delete-finbro.txt");
+
+        expenses.add(new Expense(12.50, "food", "2026-03-28"));
+        expenses.add(new Expense(8.00, "transport", "2026-03-28"));
+
+        ui.setInputs("food", "-back", "transport", "1", "yes");
+
+        DeleteCommand command = new DeleteCommand("");
+        command.execute(expenses, ui, storage);
+
+        assertEquals(1, expenses.size());
+        assertEquals(0, expenses.getCategoryExpenses("transport").size());
+        assertEquals(1, expenses.getCategoryExpenses("food").size());
+        assertEquals(1, ui.confirmExpenseShownCount);
+        assertEquals(1, ui.expenseRemovedShownCount);
+    }
+
+    //@@author zihaoalt
+    @Test
+    public void execute_walkthroughBackThenExit_expenseNotDeleted() throws FinbroException {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-delete-finbro.txt");
+
+        expenses.add(new Expense(12.50, "food", "2026-03-28"));
+
+        ui.setInputs("food", "-back", "-exit");
+
+        DeleteCommand command = new DeleteCommand("");
+        command.execute(expenses, ui, storage);
+
+        assertEquals(1, expenses.size());
+        assertEquals(0, ui.expenseRemovedShownCount);
+        assertEquals(0, ui.confirmExpenseShownCount);
+    }
+
+    //@@author zihaoalt
+    @Test
+    public void execute_walkthroughExitMixedCase_expenseNotDeleted() throws FinbroException {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-delete-finbro.txt");
+
+        expenses.add(new Expense(12.50, "food", "2026-03-28"));
+
+        ui.setInputs("food", "-EXIT");
+
+        DeleteCommand command = new DeleteCommand("");
+        command.execute(expenses, ui, storage);
+
+        assertEquals(1, expenses.size());
+        assertEquals(0, ui.expenseRemovedShownCount);
+    }
+
+    //@@author zihaoalt
+    @Test
+    public void execute_walkthroughBackMixedCase_returnsToCategory() throws FinbroException {
+        ExpenseList expenses = new ExpenseList();
+        TestUi ui = new TestUi();
+        Storage storage = new Storage("./data/test-delete-finbro.txt");
+
+        expenses.add(new Expense(12.50, "food", "2026-03-28"));
+
+        ui.setInputs("food", "-Back", "food", "1", "yes");
+
+        DeleteCommand command = new DeleteCommand("");
+        command.execute(expenses, ui, storage);
+
+        assertEquals(0, expenses.size());
+        assertEquals(1, ui.confirmExpenseShownCount);
+        assertEquals(1, ui.expenseRemovedShownCount);
+    }
+
+    //@@author zihaoalt
     private static class TestUi extends Ui {
         private String[] inputs;
         private int index = 0;
