@@ -664,7 +664,19 @@ Mar 2026 | ████████████████████ $50.00
 Apr 2026 | ██                   $5.00
 --------------------------------------------------
 ```
+---
+## Exit: `exit`
 
+Exits the Finbro application. Your expenses and settings are saved automatically before the program closes.
+
+**Format:** `exit`
+
+**Example Output:**
+```aiignore
+--------------------------------------------------
+Bye! See you again.
+--------------------------------------------------
+```
 ---
 
 ## FAQ
