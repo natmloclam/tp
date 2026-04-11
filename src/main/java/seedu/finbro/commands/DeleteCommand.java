@@ -169,7 +169,7 @@ public class DeleteCommand extends Command {
                 Deletes a specific expense from a category.
                 Format: delete <category> <number> OR delete
                 Use 1: Permanently removes the numbered expense in that category. 
-                Use 2:Type delete only will walk through the deletion process.
+                Use 2: Type delete only will walk through the deletion process.
                 Note: use the displayed index number, such as 2.""";
     }
 }
