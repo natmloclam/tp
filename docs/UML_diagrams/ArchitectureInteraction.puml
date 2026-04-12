@@ -6,7 +6,9 @@ participant ":Ui" as ui
 participant ":Finbro" as finbro
 participant ":Parser" as parser
 
-activate finbro
+
+user-> finbro ++
+
 finbro -> ui ++ : readCommand()
 user -> ui : input
 ui --> finbro -- : input
@@ -35,5 +37,7 @@ finbro -> storage++: save()
 storage -> finances++: toFileFormat()
 return
 return
+
+deactivate finbro
 
 @enduml
