@@ -119,11 +119,10 @@ The system will ask you for:
    - When did you spend this?
    - Use format: Date format shown above
 
-`. **Confirmation**
+4. **Confirmation**
    - Review your entry
    - Type `yes` to confirm or `no` to cancel
 
-### Examples
 
 ### Examples
 
@@ -282,18 +281,21 @@ The system will guide you through the deletion process step by step:
     - Enter the category of the expense you want to delete
     - The category must already exist
     - Type `-l` to display all existing category names
+    - Type `-exit` to cancel the delete operation
 
 2. **Expense Number**
     - Enter the index number of the expense in that category
     - The number must be a positive integer within the valid range
     - Type `-l` to display all expenses under the selected category
+    - Type `-back` to return to the category selection
+    - Type `-exit` to cancel the delete operation
 
 3. **Confirmation**
     - Review the expense to be deleted
     - Type `yes` or `y` to confirm deletion
     - Any other input cancels the deletion
 
-### Examples
+    
 
 ### Examples
 
@@ -329,26 +331,29 @@ yes
 
 Output:
 ```
-------------------------------------------------------------
+--------------------------------------------------
 delete
-------------------------------------------------------------
-Enter category name, or -l to list all categories:
+--------------------------------------------------
+Enter the category, or type -l to list all categories or -exit to cancel.
 Food
-Enter the expense index to delete, or type -l to list expenses in this category.
+--------------------------------------------------
+Enter the expense index to delete, type -l to list expenses, -back to return to category selection, or -exit to cancel.
 2
+--------------------------------------------------
 You entered:
-    Amount: $12.50
-    Category: food
-    Date: 12 March 2026
+   Amount: $5.00
+   Category: food
+   Date: 11 April 2026
 Confirm? [yes/no]
 yes
-------------------------------------------------------------
+--------------------------------------------------
 Got it. I've removed this expense:
-    Amount: $12.50
-    Category: food
-    Date: 12 March 2026
+   Amount: $5.00
+   Category: food
+   Date: 11 April 2026
 Now you have 1 expenses.
-------------------------------------------------------------
+--------------------------------------------------
+
 ```
 
 **Example 3: Listing categories and expenses in walkthrough mode**
@@ -398,6 +403,48 @@ Got it. I've removed this expense:
    Category: groceries
    Date: 20 January 2026
 Now you have 0 expenses.
+--------------------------------------------------
+```
+**Example 4: Using `-back` to re-choose a category**
+
+Input:
+```
+delete
+food
+-back
+transport
+1
+y
+```
+Output:
+```
+--------------------------------------------------
+delete
+--------------------------------------------------
+Enter the category, or type -l to list all categories or -exit to cancel.
+food
+--------------------------------------------------
+Enter the expense index to delete, type -l to list expenses, -back to return to category selection, or -exit to cancel.
+-back
+--------------------------------------------------
+Enter the category, or type -l to list all categories or -exit to cancel.
+transport
+--------------------------------------------------
+Enter the expense index to delete, type -l to list expenses, -back to return to category selection, or -exit to cancel.
+1
+--------------------------------------------------
+You entered:
+   Amount: $5.00
+   Category: transport
+   Date: 11 April 2026
+Confirm? [yes/no]
+y
+--------------------------------------------------
+Got it. I've removed this expense:
+   Amount: $5.00
+   Category: transport
+   Date: 11 April 2026
+Now you have 1 expenses.
 --------------------------------------------------
 
 ```
@@ -664,7 +711,19 @@ Mar 2026 | ████████████████████ $50.00
 Apr 2026 | ██                   $5.00
 --------------------------------------------------
 ```
+---
+## Exit: `exit`
 
+Exits the Finbro application. Your expenses and settings are saved automatically before the program closes.
+
+**Format:** `exit`
+
+**Example Output:**
+```
+--------------------------------------------------
+Bye! See you again.
+--------------------------------------------------
+```
 ---
 
 ## FAQ
@@ -706,3 +765,4 @@ current limit unchanged.
 | Visualize  | `visual`                                          | Shows a bar chart of monthly expenses                           |
 | Help       | `help`                                            | Shows help information                                          |
 | Help       | `help <command>`                                  | Shows detailed help for a specific command                      |
+| Exit       | `exit`                                            | Exits Finbro                                                    |

@@ -1,0 +1,109 @@
+@startuml DeleteCommand_Walkthrough
+'https://plantuml.com/sequence-diagram
+actor User
+
+participant ":Ui"
+participant "c:DeleteCommand"
+participant ":ExpenseList"
+
+
+[-> "c:DeleteCommand" : runWalkthrough(expenses, ui)
+activate "c:DeleteCommand"
+
+loop until valid category chosen or "-exit"
+    "c:DeleteCommand" -> ":Ui" : showEnterCategoryOptionPrompt()
+    activate ":Ui"
+    deactivate ":Ui"
+
+    "c:DeleteCommand" -> ":Ui" : readCommand()
+    activate ":Ui"
+    User -> ":Ui" : input
+    ":Ui" --> "c:DeleteCommand" : category
+    deactivate ":Ui"
+
+    alt category == "-exit"
+        "c:DeleteCommand" -> ":Ui" : showExitDeleteMessage()
+        activate ":Ui"
+        deactivate ":Ui"
+    else category == "-l"
+        "c:DeleteCommand" -> ":ExpenseList" : getAllCategoryNames()
+        activate ":ExpenseList"
+        ":ExpenseList" --> "c:DeleteCommand" : categoryNames
+        deactivate ":ExpenseList"
+
+        "c:DeleteCommand" -> ":Ui" : showAllCategoryNames(categoryNames)
+        activate ":Ui"
+        deactivate ":Ui"
+    else blank or non-existent
+        "c:DeleteCommand" -> ":Ui" : showInlineError(...)
+        activate ":Ui"
+        deactivate ":Ui"
+    else valid category
+        "c:DeleteCommand" -> ":ExpenseList" : getCategoryExpenses(category)
+        activate ":ExpenseList"
+        ":ExpenseList" --> "c:DeleteCommand" : categoryList
+        deactivate ":ExpenseList"
+    end
+end
+
+loop until valid index chosen, "-back", or "-exit"
+    "c:DeleteCommand" -> ":Ui" : showEnterIndexPrompt()
+    activate ":Ui"
+    deactivate ":Ui"
+
+    "c:DeleteCommand" -> ":Ui" : readCommand()
+    activate ":Ui"
+    User -> ":Ui" : input
+    ":Ui" --> "c:DeleteCommand" : input
+    deactivate ":Ui"
+
+    alt input == "-exit"
+        "c:DeleteCommand" -> ":Ui" : showExitDeleteMessage()
+        activate ":Ui"
+        deactivate ":Ui"
+    else input == "-back"
+        note right of "c:DeleteCommand" : break INDEX LOOP,\nre-enter CATEGORY LOOP
+    else input == "-l"
+        "c:DeleteCommand" -> ":Ui" : showCategoryExpenses(category, categoryList)
+        activate ":Ui"
+        deactivate ":Ui"
+    else invalid index
+        "c:DeleteCommand" -> ":Ui" : showInlineError(...)
+        activate ":Ui"
+        deactivate ":Ui"
+    else valid index
+        "c:DeleteCommand" -> ":ExpenseList" : getExpenseByCategoryIndex(categoryList, index)
+        activate ":ExpenseList"
+        ":ExpenseList" --> "c:DeleteCommand" : expense
+        deactivate ":ExpenseList"
+
+        "c:DeleteCommand" -> ":Ui" : showConfirmExpense(expense)
+        activate ":Ui"
+        deactivate ":Ui"
+
+        "c:DeleteCommand" -> ":Ui" : readCommand()
+        activate ":Ui"
+        User -> ":Ui" : yes / no
+        ":Ui" --> "c:DeleteCommand" : confirm
+        deactivate ":Ui"
+
+        alt confirmed
+            "c:DeleteCommand" -> ":ExpenseList" : removeByCategoryIndex(category, index)
+            activate ":ExpenseList"
+            ":ExpenseList" --> "c:DeleteCommand" : removedExpense
+            deactivate ":ExpenseList"
+
+            "c:DeleteCommand" -> ":Ui" : showExpenseRemoved(removedExpense, expenses.size())
+            activate ":Ui"
+            deactivate ":Ui"
+        else cancelled
+            "c:DeleteCommand" -> ":Ui" : showCancelDeleteMessage()
+            activate ":Ui"
+            deactivate ":Ui"
+        end
+    end
+end
+
+deactivate "c:DeleteCommand"
+
+@enduml

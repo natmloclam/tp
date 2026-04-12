@@ -49,15 +49,19 @@ public class DeleteCommand extends Command {
     }
     //@@author zihaoalt
     private void verifyInputLength(String input) throws FinbroException {
-        String [] parts = input.split(" ");
+        String[] parts = input.trim().split("\\s+");
         if (parts.length < 2) {
+            logger.log(Level.WARNING, "Invalid command format");
+            throw new FinbroException("Usage: delete <category> <number>");
+        }
+        if (parts.length > 2) {
             logger.log(Level.WARNING, "Invalid command format");
             throw new FinbroException("Usage: delete <category> <number>");
         }
     }
     //@@author zihaoalt
     private int verifyIndex(String input) throws FinbroException {
-        String[] parts = input.split(" ");
+        String[] parts = input.trim().split("\\s+");
         logger.log(Level.INFO, "Attempting to delete expense in category " + parts[0] + " #" + parts[1]);
 
         int index;
@@ -71,96 +75,122 @@ public class DeleteCommand extends Command {
     }
     //@@author zihaoalt
     private String filterCategory(String input) throws FinbroException {
-        String[] parts = input.split(" ");
+        String[] parts = input.trim().split("\\s+");
         return parts[0];
     }
     //@@author zihaoalt
     private void runWalkthrough(ExpenseList expenses, Ui ui) throws FinbroException {
-        String category;
-        int index;
-        List<Expense> categoryList;
-        List<String> categoryNames;
-
-
-        // CATEGORY LOOP
         while (true) {
-            ui.showEnterCategoryOptionPrompt();
-            category = ui.readCommand();
-            if (category == null) {
-                logger.log(Level.WARNING, "UI returned null while reading delete category input");
-                throw new FinbroException("Failed to read category input.");
-            }
-            category = category.trim();
+            String category;
+            List<Expense> categoryList;
+            List<String> categoryNames;
 
-            if (category.isBlank()) {
-                logger.log(Level.WARNING, "Delete walkthrough received blank category input");
-                ui.showInlineError("Category cannot be empty.");
-                continue;
-            }
+            // CATEGORY LOOP
+            while (true) {
+                ui.showEnterCategoryOptionPrompt();
+                category = ui.readCommand();
 
-            if (category.equals("-l")) {
-                categoryNames = expenses.getAllCategoryNames();
-                logger.log(Level.INFO, "Successfully walked through all category names");
-                ui.showAllCategoryNames(categoryNames);
-                continue;
-            }
+                if (category == null) {
+                    logger.log(Level.WARNING, "UI returned null while reading delete category input");
+                    throw new FinbroException("Failed to read category input.");
+                }
 
-            categoryList = expenses.getCategoryExpenses(category);
-            if (categoryList.isEmpty()) {
-                logger.log(Level.WARNING, "Delete walkthrough category not found: \"{0}\"", category);
-                ui.showInlineError("Category " + category + " does not exist.");
-                continue;
-            }
-            break;
-        }
+                category = category.trim();
 
-        // INDEX LOOP
-        while (true) {
-            ui.showEnterIndexPrompt();
-            String input = ui.readCommand();
-            if (input == null) {
-                logger.log(Level.WARNING, "UI returned null while reading delete index input");
-                throw new FinbroException("Failed to read index input.");
-            }
-            input = input.trim();
+                if (category.equalsIgnoreCase("-exit")) {
+                    logger.log(Level.INFO, "User cancelled deleting an expense");
+                    ui.showExitDeleteMessage();
+                    return;
+                }
 
-            if (input.equalsIgnoreCase("-l")) {
-                ui.showCategoryExpenses(category, categoryList);
-                continue;
-            }
-
-            try {
-                index = Integer.parseInt(input);
-                if (index <= 0 || index > categoryList.size()) {
-                    ui.showInlineError("Index out of bounds.");
+                if (category.isBlank()) {
+                    logger.log(Level.WARNING, "Delete walkthrough received blank category input");
+                    ui.showDeleteError("Category cannot be empty.");
                     continue;
                 }
+
+                if (category.equalsIgnoreCase("-l")) {
+                    categoryNames = expenses.getAllCategoryNames();
+                    logger.log(Level.INFO, "Successfully displayed all category names");
+                    ui.showAllCategoryNames(categoryNames);
+                    continue;
+                }
+
+                categoryList = expenses.getCategoryExpenses(category);
+                if (categoryList.isEmpty()) {
+                    logger.log(Level.WARNING, "Delete walkthrough category not found: \"{0}\"", category);
+                    ui.showDeleteError("Category " + category + " does not exist.");
+                    continue;
+                }
+
                 break;
-            } catch (NumberFormatException e) {
-                ui.showInlineError("Enter a valid index number, or type -l to list expenses.");
+            }
+
+            // INDEX LOOP
+            while (true) {
+                ui.showEnterIndexPrompt();
+                String input = ui.readCommand();
+
+                if (input == null) {
+                    logger.log(Level.WARNING, "UI returned null while reading delete index input");
+                    throw new FinbroException("Failed to read index input.");
+                }
+
+                input = input.trim();
+
+                if (input.equalsIgnoreCase("-exit")) {
+                    logger.log(Level.INFO, "User cancelled deleting an expense");
+                    ui.showExitDeleteMessage();
+                    return;
+                }
+
+                if (input.equalsIgnoreCase("-back")) {
+                    logger.log(Level.INFO, "User returned to category selection");
+
+                    break;
+                }
+
+                if (input.equalsIgnoreCase("-l")) {
+                    ui.showCategoryExpenses(category, categoryList);
+                    continue;
+                }
+
+                try {
+                    int index = Integer.parseInt(input);
+
+                    if (index <= 0 || index > categoryList.size()) {
+                        ui.showDeleteError("Index out of bounds.");
+                        continue;
+                    }
+
+                    Expense expense = expenses.getExpenseByCategoryIndex(categoryList, index);
+                    ui.showConfirmExpense(expense);
+
+                    String confirm = ui.readCommand();
+                    if (confirm == null) {
+                        logger.log(Level.WARNING, "UI returned null while reading delete confirmation input");
+                        throw new FinbroException("Failed to read confirmation input.");
+                    }
+
+                    confirm = confirm.trim();
+
+                    if (confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("y")) {
+                        logger.log(Level.INFO, "User confirmed deletion for category \"{0}\" index {1}",
+                                new Object[]{category, index});
+                        expense = expenses.removeByCategoryIndex(category, index);
+                        ui.showExpenseRemoved(expense, expenses.size());
+                    } else {
+                        logger.log(Level.INFO, "User cancelled delete walkthrough for category \"{0}\" index {1}",
+                                new Object[]{category, index});
+                        ui.showCancelDeleteMessage();
+                    }
+
+                    return;
+                } catch (NumberFormatException e) {
+                    ui.showDeleteError("Enter a valid index number, type -l to list expenses, or -back to return.");
+                }
             }
         }
-
-        // CONFIRMATION
-        Expense expense = expenses.getExpenseByCategoryIndex(categoryList, index);
-        ui.showConfirmExpense(expense);
-        String confirm = ui.readCommand();
-        if (confirm == null) {
-            logger.log(Level.WARNING, "UI returned null while reading delete confirmation input");
-            throw new FinbroException("Failed to read confirmation input.");
-        }
-        confirm = confirm.trim();
-        if (confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("y")) {
-            logger.log(Level.INFO, "User confirmed deletion for category \"{0}\" index {1}",
-                    new Object[]{category, index});
-            expense = expenses.removeByCategoryIndex(category, index);
-            ui.showExpenseRemoved(expense, expenses.size());
-        } else {
-            logger.log(Level.INFO, "User cancelled delete walkthrough for category \"{0}\" index {1}",
-                    new Object[]{category, index});
-            ui.showCancelDeleteMessage();
-        }
-
     }
     //@@author zihaoalt
     @Override
