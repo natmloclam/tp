@@ -45,7 +45,9 @@ public class Ui {
     //@@author zihaoalt
     public void showEnterIndexPrompt() {
         showLine();
-        System.out.println("Enter the expense index to delete, or type -l to list expenses in this category.");
+        System.out.println("Enter the expense index to delete, type -l to list expenses, "
+                + "-back to return to category selection, or -exit to cancel.");
+
     }
     //@@author zihaoalt
     public void showAllCategoryNames(List<String> categoryNames) {
@@ -53,6 +55,12 @@ public class Ui {
         for (String categoryName : categoryNames) {
             System.out.println("Category Name : " + categoryName);
         }
+        showLine();
+    }
+    //@@author zihaoalt
+    public void showExitDeleteMessage() {
+        showLine();
+        System.out.println("Successfully exit the delete command.");
         showLine();
     }
     //@@author zihaoalt
@@ -94,7 +102,8 @@ public class Ui {
     }
     //@@author zihaoalt
     public void showEnterCategoryOptionPrompt() {
-        System.out.println("Enter the category, or type -l to list all categories.");
+        showLine();
+        System.out.println("Enter the category, or type -l to list all categories or -exit to cancel.");
     }
     //@@author Kushalshah0402
     public void showEnterDatePrompt() {
@@ -124,6 +133,12 @@ public class Ui {
     //@@author Kushalshah0402
     public void showInlineError(String message) {
         System.out.println("Warning: " + message);
+    }
+
+    //@@author zihaoalt
+    public void showDeleteError(String message) {
+        showLine();
+        System.out.println("Error: " + message);
     }
 
     //@@author Kushalshah0402

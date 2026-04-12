@@ -24,7 +24,6 @@
 
 ---
 
-## Acknowledgements
 
 ## Acknowledgements
 
@@ -456,7 +455,7 @@ In direct mode, the system parses and validates the input parameters:
 1. The category is extracted from the command
 2. The expense number is parsed and validated
 3. The corresponding expense is removed from the `ExpenseList`
-   `. A confirmation message is displayed
+   . A confirmation message is displayed
 
 #### Walkthrough Mode
 
@@ -470,6 +469,22 @@ for:
 Each input is validated before proceeding. Invalid input results in an error message and a repeated prompt until valid
 data is provided.
 
+**Escape keywords** (all case-insensitive) allow the user to navigate or abort the walkthrough at any prompt:
+
+- `-l` — lists all categories (at the category prompt) or all expenses in the current category (at the index prompt).
+- `-back` — available only at the index prompt. Returns the user to the category prompt so they can re-choose a different category without cancelling the delete operation.
+- `-exit` — available at both prompts. Calls `Ui#showExitDeleteMessage()` and returns from `runWalkthrough` immediately, cancelling the delete operation.
+
+The walkthrough is implemented as an outer `while(true)` loop wrapping the CATEGORY LOOP and INDEX LOOP. `-exit`
+triggers an early `return` from `runWalkthrough`, while `-back` `break`s out of the INDEX LOOP so the outer loop
+re-enters the CATEGORY LOOP with a fresh category state.
+
+**After collecting all inputs:**
+
+- If the user confirms, the expense is deleted and `Ui#showExpenseRemoved(...)` is called.
+- Otherwise, `Ui#showCancelDeleteMessage()` is called.
+
+
 **After collecting all inputs:**
 
 - If the user confirms, the expense is deleted
@@ -477,10 +492,19 @@ data is provided.
 
 #### Sequence of Operations
 
-The following diagram illustrates the interaction between system components when executing the `delete` command in both
-direct and walkthrough modes.
+The following diagram illustrates the interaction between system components when executing the `delete` command.
+It shows the initial parsing, the direct-mode path in detail.
 
 ![Delete Expense Sequence Diagram](UML_diagrams/images/DeleteCommand.png)
+
+#### Walkthrough Mode Sequence
+
+The walkthrough branch of `runWalkthrough(...)` is illustrated separately below. This view focuses on the two
+interactive loops (CATEGORY LOOP and INDEX LOOP) and the escape keywords (`-l`, `-back`, `-exit`) that let the
+user list, navigate between, or abort prompts without deleting anything.
+
+![Delete Walkthrough Sequence Diagram](UML_diagrams/images/DeleteCommand_Walkthrough.png)
+
 
 #### Design Considerations
 
@@ -566,8 +590,8 @@ When the application starts, `Storage.load()` is called:
 1. If the file does not exist, an empty list is returned and a new file will be created on the next save
 2. The first line is passed to `readLimit()` which checks for the `LIMIT | <value>` format and sets the budget limit via
    `Limit.setLimit()`
-3. If the first line is not a limit entry, it is treated as an expense line instead
-   `. Each subsequent line is passed to `processExpenseLine()` which splits by `|` and validates the format and amount
+3. If the first line is not a limit entry, it is treated as an expense line instead.
+   Each subsequent line is passed to `processExpenseLine()` which splits by `|` and validates the format and amount
    before adding to the list
 4. Corrupted or malformed lines are logged and skipped without crashing the application
 
