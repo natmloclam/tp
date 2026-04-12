@@ -49,15 +49,19 @@ public class DeleteCommand extends Command {
     }
     //@@author zihaoalt
     private void verifyInputLength(String input) throws FinbroException {
-        String [] parts = input.split(" ");
+        String[] parts = input.trim().split("\\s+");
         if (parts.length < 2) {
+            logger.log(Level.WARNING, "Invalid command format");
+            throw new FinbroException("Usage: delete <category> <number>");
+        }
+        if (parts.length > 2) {
             logger.log(Level.WARNING, "Invalid command format");
             throw new FinbroException("Usage: delete <category> <number>");
         }
     }
     //@@author zihaoalt
     private int verifyIndex(String input) throws FinbroException {
-        String[] parts = input.split(" ");
+        String[] parts = input.trim().split("\\s+");
         logger.log(Level.INFO, "Attempting to delete expense in category " + parts[0] + " #" + parts[1]);
 
         int index;
@@ -71,7 +75,7 @@ public class DeleteCommand extends Command {
     }
     //@@author zihaoalt
     private String filterCategory(String input) throws FinbroException {
-        String[] parts = input.split(" ");
+        String[] parts = input.trim().split("\\s+");
         return parts[0];
     }
     //@@author zihaoalt

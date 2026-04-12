@@ -355,7 +355,7 @@ public class DeleteCommandTest {
         public void showEnterIndexPrompt() { }
 
         @Override
-        public void showInlineError(String message) {
+        public void showDeleteError(String message) {
             inlineErrorCount++;
             lastInlineError = message;
         }
