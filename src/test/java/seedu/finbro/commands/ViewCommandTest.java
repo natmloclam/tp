@@ -58,6 +58,40 @@ public class ViewCommandTest {
 
     //@@author AK47ofCode
     @Test
+    public void execute_viewAllSortYear_sortedChronologically() throws FinbroException {
+        ExpenseList expenses = createSampleExpenses();
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("all -sort year").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(10.0, "utilities", "5 January 2026"),
+                new Expense(4.0, "transport", "20 January 2026"),
+                new Expense(12.0, "transport", "3 February 2026"),
+                new Expense(20.0, "food", "15 March 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewAllSortYear_sortsDifferentYears() throws FinbroException {
+        ExpenseList expenses = createSampleExpenses();
+        expenses.add(new Expense(5.0, "food", "10 February 2025"));
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("all -sort year").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(5.0, "food", "10 February 2025"),
+                new Expense(10.0, "utilities", "5 January 2026"),
+                new Expense(4.0, "transport", "20 January 2026"),
+                new Expense(12.0, "transport", "3 February 2026"),
+                new Expense(20.0, "food", "15 March 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
     public void execute_viewAllSortMonth_sortedChronologically() throws FinbroException {
         ExpenseList expenses = createSampleExpenses();
         CaptureUi ui = new CaptureUi();
@@ -85,6 +119,35 @@ public class ViewCommandTest {
                 new Expense(4.0, "transport", "20 January 2026"),
                 new Expense(12.0, "transport", "3 February 2026"),
                 new Expense(10.0, "utilities", "5 January 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewCategorySortYear_sortedChronologically() throws FinbroException {
+        ExpenseList expenses = createSampleExpenses();
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("transport -sort year").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(4.0, "transport", "20 January 2026"),
+                new Expense(12.0, "transport", "3 February 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewCategorySortYear_sortsDifferentYears() throws FinbroException {
+        ExpenseList expenses = createSampleExpensesMultiYear();
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("transport -sort year").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(5.0, "transport", "10 February 2025"),
+                new Expense(4.0, "transport", "20 January 2026"),
+                new Expense(12.0, "transport", "3 February 2026")
         ), ui.lastShownExpenses);
     }
 
@@ -125,6 +188,21 @@ public class ViewCommandTest {
         new ViewCommand("transport -filter JANUARY").execute(expenses, ui, null);
 
         assertEquals(List.of(
+                new Expense(4.0, "transport", "20 January 2026")
+        ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    @Test
+    public void execute_viewCategoryFilterAndSortYear_filtersThenSorts() throws FinbroException {
+        ExpenseList expenses = createSampleExpenses();
+        expenses.add(new Expense(7.0, "transport", "8 January 2025"));
+        CaptureUi ui = new CaptureUi();
+
+        new ViewCommand("transport -filter january -sort year").execute(expenses, ui, null);
+
+        assertEquals(List.of(
+                new Expense(7.0, "transport", "8 January 2025"),
                 new Expense(4.0, "transport", "20 January 2026")
         ), ui.lastShownExpenses);
     }
@@ -187,9 +265,10 @@ public class ViewCommandTest {
         CaptureUi ui = new CaptureUi();
 
         FinbroException exception = assertThrows(FinbroException.class,
-                () -> new ViewCommand("all -sort year").execute(expenses, ui, null));
+                () -> new ViewCommand("all -sort six-seven").execute(expenses, ui, null));
 
-        assertEquals("Invalid sort type: year\nSupported sorts: month, category, amount", exception.getMessage());
+        assertEquals("Invalid sort type: six-seven\nSupported sorts: year, month, category, amount",
+                exception.getMessage());
     }
 
     //@@author AK47ofCode
@@ -251,6 +330,15 @@ public class ViewCommandTest {
         assertEquals(List.of(
                 new Expense(4.0, "transport", "20 January 2026")
         ), ui.lastShownExpenses);
+    }
+
+    //@@author AK47ofCode
+    private static ExpenseList createSampleExpensesMultiYear() {
+        ExpenseList expenses = new ExpenseList();
+        expenses.add(new Expense(5.0, "transport", "10 February 2025"));
+        expenses.add(new Expense(12.0, "transport", "3 February 2026"));
+        expenses.add(new Expense(4.0, "transport", "20 January 2026"));
+        return expenses;
     }
 
     //@@author AK47ofCode
