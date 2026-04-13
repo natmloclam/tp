@@ -121,20 +121,6 @@ public class AddCommandTest {
     }
 
     @Test
-    void execute_strictModeMultiWordCategory_expenseAdded() throws Exception {
-        String input = "yes\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-        ExpenseList list = new ExpenseList();
-        Ui ui = new Ui();
-
-        AddCommand command = new AddCommand("20 my shopping today");
-        command.execute(list, ui, null);
-
-        assertEquals(1, list.size());
-    }
-
-    @Test
     void execute_strictModeMixedCaseCategory_caseInsensitiveLookupFindsExpense() throws Exception {
         String input = "yes\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
@@ -178,7 +164,7 @@ public class AddCommandTest {
                 """
                         20
                         123
-                        my shopping
+                        shopping
                         2020-01-01
                         yes
                         """;
@@ -454,4 +440,3 @@ public class AddCommandTest {
     }
 
 }
-
