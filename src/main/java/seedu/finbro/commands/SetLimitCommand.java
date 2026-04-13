@@ -82,4 +82,9 @@ public class SetLimitCommand extends Command {
                 Use: Creates or replaces the current monthly budget limit.
                 Note: amount must be positive.""";
     }
+
+    @Override
+    public boolean checksBudget() {
+        return true;
+    }
 }

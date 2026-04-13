@@ -22,7 +22,11 @@ public class BudgetWarningService {
      * @param expenses The list of expenses to evaluate.
      * @param ui The UI instance to display warnings.
      */
-    public void checkAndShowWarnings(ExpenseList expenses, Ui ui) {
+    public void checkAndShowWarnings(ExpenseList expenses, Ui ui, boolean checksBudget) {
+        if (!checksBudget) {
+            return;
+        }
+
         double monthlyTotal = expenses.getCurrentMonthTotalExpenditure();
         double limit = Limit.getLimit();
         logger.log(Level.INFO, "Monthly Total Expenditure: " + monthlyTotal);
