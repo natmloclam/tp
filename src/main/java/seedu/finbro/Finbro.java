@@ -35,6 +35,7 @@ public class Finbro {
     //@@author Kushalshah0402 natmloclam AK47ofCode
     public void run() {
         ui.showWelcome();
+        budgetWarningService.checkAndShowWarnings(expenses, ui, true);
         boolean isExit = false;
 
         while (!isExit) {

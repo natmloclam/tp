@@ -28,7 +28,6 @@ public class BudgetWarningService {
         }
 
         if (Limit.getLimit() == 0) {
-            ui.showUninitializedLimit();
             return;
         }
 
