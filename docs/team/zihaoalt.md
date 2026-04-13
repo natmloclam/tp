@@ -66,19 +66,7 @@ allows users to record expenses, monitor spending habits, set financial limits, 
 * Reduces friction when users forget command names or formats.
 
 ---
-#### 4. Add Command Walkthrough Navigation (`-back` and `-exit`)
 
-* Enhanced the `add` command's walkthrough mode to support `-back` and `-exit` navigation at each input step (amount, category, date).
-  * `-back` allows users to return to the previous input step without restarting the entire command.
-  * `-exit` allows users to cancel the walkthrough at any point.
-* Added corresponding test cases covering `-exit` at each step, `-back` at each step, chained `-back` across multiple steps, and combinations of `-back` followed by `-exit`.
-
-**Impact:**
-
-* Provides a consistent navigation experience (`-back` / `-exit`) across both add and delete walkthrough modes.
-* Eliminates the need to restart the entire add command after entering a wrong value.
-
----
 
 ### Contributions to User Guide
 
@@ -92,8 +80,7 @@ Added and refined documentation for:
     * documented both direct mode and walkthrough mode
     * explained the guided deletion flow, including the use of `-l`
     * added examples and confirmation behavior
-* **Add Command Walkthrough Navigation**
-  * Documented `-back` and `-exit` support during add walkthrough mode
+
 
 
 ---
