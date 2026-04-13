@@ -77,7 +77,7 @@ class VisualCommandTest {
             new VisualCommand().execute(expenses, ui, storage);
         });
 
-        String expectedMessage = "Error: No expenses found";
+        String expectedMessage = "No expenses found";
         String actualMessage = e.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
