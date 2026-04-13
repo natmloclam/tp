@@ -35,7 +35,7 @@ public class EditLimitCommand extends Command {
                 logger.log(Level.INFO, "User chose to increase limit");
                 ui.showEnterAmountPrompt("increase");
 
-                double increase = parsePositiveAmount(ui.readCommand().trim());
+                double increase = parseUnsignedNonNegativeAmount(ui.readCommand().trim());
                 assert increase >= 0 : "Increase amount should be non-negative";
 
                 logger.log(Level.INFO, "Increase amount entered: {0}", increase);
@@ -46,7 +46,7 @@ public class EditLimitCommand extends Command {
                 logger.log(Level.INFO, "User chose to decrease limit");
                 ui.showEnterAmountPrompt("decrease");
 
-                double decrease = parsePositiveAmount(ui.readCommand().trim());
+                double decrease = parseUnsignedNonNegativeAmount(ui.readCommand().trim());
                 assert decrease >= 0 : "Decrease amount should be non-negative";
 
                 logger.log(Level.INFO, "Decrease amount entered: {0}", decrease);
@@ -99,6 +99,14 @@ public class EditLimitCommand extends Command {
         }
 
         return amount;
+    }
+
+    //@@author WangZX2001
+    private static double parseUnsignedNonNegativeAmount(String input) throws FinbroException {
+        if (input.startsWith("+") || input.startsWith("-")) {
+            throw new FinbroException("Monthly spending limit must not be a signed number");
+        }
+        return parsePositiveAmount(input);
     }
 
     //@@author WangZX2001

@@ -655,34 +655,7 @@ You will then be asked to confirm the change before the new limit is applied.
 * All inputs must be **valid non-negative numbers**.
 * The system will reject invalid menu selections or invalid numeric inputs.
 
-Input:
-```
-edit limit
-5
-```
-
-Output:
-```
---------------------------------------------------
-edit limit
---------------------------------------------------
-Current monthly budget limit: $100.00
-Choose an action:
-1. Increase limit
-2. Decrease limit
-3. Replace limit
---------------------------------------------------
-5
---------------------------------------------------
-Warning: Please enter 1, 2, or 3.
---------------------------------------------------
-Current monthly budget limit: $100.00
-Choose an action:
-1. Increase limit
-2. Decrease limit
-3. Replace limit
---------------------------------------------------
-```
+* For **Increase** / **Decrease**, the amount must be an **unsigned non-negative number** (do not include `+` or `-`).
 
 ### Examples
 
@@ -764,15 +737,9 @@ Monthly budget limit: $100.00
 
 If you enter an option outside `1`, `2`, or `3`, Finbro will show a warning and display the menu again.
 
-**Issue: Entering a negative amount**
-
-If you enter a negative amount, Finbro will show an error and exit the `edit limit` flow. Run `edit limit` again to retry.
-
-
 **Issue: Leaving the amount blank (pressing Enter)**
 
 If you do not enter anything when asked for an amount, Finbro will show an error and exit the `edit limit` flow. Run `edit limit` again to retry.
-
 
 ---
 ## Budget Reminder System
