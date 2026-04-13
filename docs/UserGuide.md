@@ -1,6 +1,7 @@
 # User Guide
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Quick Start](#quick-start)
 - [Features](#features)
@@ -36,10 +37,15 @@ for better financial awareness.
    `java -jar Finbro.jar`
 
 4. Start entering commands to manage your expenses.
+5. Finbro automatically saves your data to `./data/finbro.txt` so it can be loaded the next time you run the app.
+   - The first line stores your spending limit in the format: `LIMIT | <amount>`
+   - Each subsequent line stores one expense in the format: `<amount> | <category> | <date>`
+   - Do not edit `./data/finbro.txt` manually. Changing symbols (especially `|`), order, or date/number formats can corrupt the file and may cause Finbro to load incorrectly or fail to load your entries.
 
 ---
 
 # Features
+
 ## Help Command
 
 The `help` command displays usage information for available commands in Finbro.  
@@ -52,20 +58,24 @@ You can use it either to see the general command list or to view detailed help f
 ```
 help
 ```
+
 ### Command-Specific Help
+
 Use this when you want more detailed help for a specific command:
+
 ```
 help <command>
 ```
+
 Supported examples:
 
- - help add
- - help delete
- - help view
- - help limit
- - help edit limit
- - help currency
- - help visual
+- help add
+- help delete
+- help view
+- help limit
+- help edit limit
+- help currency
+- help visual
 
 ---
 
@@ -73,7 +83,6 @@ Supported examples:
 
 The `add` command lets you record a new expense. Whether you're in a hurry or want to take your time, we've got you covered.
 It supports two modes: **Direct Mode** (enter all details in one command) and **Walkthrough Mode** (answer guided prompts).
-
 
 ### Direct Mode
 
@@ -86,12 +95,13 @@ add <amount> <category> <date>
 **Required Information:**
 
 | Field        | Format           | Example                                                     |
-|--------------|------------------|-------------------------------------------------------------|
+| ------------ | ---------------- | ----------------------------------------------------------- |
 | **Amount**   | Positive number  | `50.00` or `25`                                             |
 | **Category** | Text | `Groceries`                                                 |
 | **Date**     | YYYY-MM-DD       | `2026-01-20` or `today, last week, 2 days ago, last monday` |
 
 **Example:**
+
 ```
 add 50.00 Groceries 2026-01-20
 ```
@@ -102,6 +112,7 @@ add 50.00 Groceries 2026-01-20
 **Use this when you want the system to guide you:**
 
 Simply type:
+
 ```
 add
 ```
@@ -116,7 +127,6 @@ The system will ask you for:
    - The value will be rounded to 2 decimal places.
    - A confirmation will be required if the amount exceeds `10,000`.
    - Examples: `50.00`, `25`
-   
 2. **Expense Category**
    - The application will prompt: `Enter the category:`
    - Enter the expense category.
@@ -144,18 +154,19 @@ The system will ask you for:
    - Review your entry
    - Type `yes` to confirm or `no` to cancel (shortcuts `y` and `n` are also accepted)
 
-
 ### Examples
 
 **Example 1: Adding groceries in direct mode**
 
 Input:
+
 ```
 add 5.50 Groceries 2026-01-20
 yes
 ```
 
 Output:
+
 ```
 ------------------------------------------------------------
 add 5.50 Groceries 2026-01-20
@@ -178,6 +189,7 @@ Now you have 1 expenses.
 **Example 2: Adding a transport expense in walkthrough mode**
 
 Input:
+
 ```
 add
 15.00
@@ -187,6 +199,7 @@ yes
 ```
 
 Output:
+
 ```
 ------------------------------------------------------------
 add
@@ -215,12 +228,14 @@ Now you have 2 expenses.
 **Example 3: Quick coffee purchase**
 
 Input:
+
 ```
 add 5.00 Food yesterday
 yes
 ```
 
 Output:
+
 ```
 ------------------------------------------------------------
 add 5.00 Food yesterday
@@ -239,32 +254,38 @@ Got it. I've added this expense:
 Now you have 3 expenses.
 ------------------------------------------------------------
 ```
+
 ### Common Issues
 
 **❌ Error: "Amount must be a positive number"**
+
 - Make sure you entered a valid number
 - Amount less than and equal to 0 are not allowed
 - Decimal numbers are okay (e.g., `12.50`)
 
 **❌ Error: "Invalid date format"**
+
 - Use the format: `YYYY-MM-DD`
 - Make sure the date is valid
 - Valid Examples: `2026-04-12`,`2025-12-31`
 
 **❌ Error: "Category cannot be empty"**
+
 - Enter a category name (no purely numeric or purely special character entry)
 - Valid Examples: `Food & Drinks`, `Transport`, `Rent`, `Entertainment`
 
+
 **❌ "I made a mistake"**
+
 - type `no` when asked to confirm
 - You can delete the expense and add a new one
 - Or use the `delete` command to remove the incorrect entry
 
 ---
+
 ## Delete Expense Command
 
 The `delete` command lets you remove an existing expense. Similar to the `add` command, it supports both direct mode and walkthrough mode.
-
 
 ### Direct Mode
 
@@ -276,13 +297,14 @@ delete <category> <index>
 
 **Required Information:**
 
-| Field        | Format           | Example                                                     |
-|--------------|------------------|-------------------------------------------------------------|
-| **category** | Text | `Groceries`                                                 |
-| **Index**    | Positive Number  | 1                                                           |
+| Field        | Format           | Example     |
+| ------------ | ---------------- | ----------- |
+| **category** | Text (no spaces) | `Groceries` |
+| **Index**    | Positive Number  | 1           |
 
 
 **Example:**
+
 ```
 delete food 1
 ```
@@ -292,6 +314,7 @@ delete food 1
 **Use this when you want the system to guide you:**
 
 Simply type:
+
 ```
 delete
 ```
@@ -299,35 +322,35 @@ delete
 The system will guide you through the deletion process step by step:
 
 1. **Category**
-    - Enter the category of the expense you want to delete
-    - The category must already exist
-    - Type `-l` to display all existing category names
-    - Type `-exit` to cancel the delete operation
+   - Enter the category of the expense you want to delete
+   - The category must already exist
+   - Type `-l` to display all existing category names
+   - Type `-exit` to cancel the delete operation
 
 2. **Expense Number**
-    - Enter the index number of the expense in that category
-    - The number must be a positive integer within the valid range
-    - Type `-l` to display all expenses under the selected category
-    - Type `-back` to return to the category selection
-    - Type `-exit` to cancel the delete operation
+   - Enter the index number of the expense in that category
+   - The number must be a positive integer within the valid range
+   - Type `-l` to display all expenses under the selected category
+   - Type `-back` to return to the category selection
+   - Type `-exit` to cancel the delete operation
 
 3. **Confirmation**
-    - Review the expense to be deleted
-    - Type `yes` or `y` to confirm deletion
-    - Any other input cancels the deletion
-
-    
+   - Review the expense to be deleted
+   - Type `yes` or `y` to confirm deletion
+   - Any other input cancels the deletion
 
 ### Examples
 
 **Example 1: Deleting an expense in direct mode**
 
 Input:
+
 ```
 delete food 1
 ```
 
 Output:
+
 ```
 ------------------------------------------------------------
 delete food 1
@@ -343,6 +366,7 @@ Now you have 1 expenses.
 **Example 2: Deleting an expense in walkthrough mode**
 
 Input:
+
 ```
 delete
 Food
@@ -351,6 +375,7 @@ yes
 ```
 
 Output:
+
 ```
 --------------------------------------------------
 delete
@@ -380,6 +405,7 @@ Now you have 1 expenses.
 **Example 3: Listing categories and expenses in walkthrough mode**
 
 Input:
+
 ```
 delete
 -l
@@ -390,6 +416,7 @@ y
 ```
 
 Output:
+
 ```
 ------------------------------------------------------------
 delete
@@ -426,9 +453,11 @@ Got it. I've removed this expense:
 Now you have 0 expenses.
 --------------------------------------------------
 ```
+
 **Example 4: Using `-back` to re-choose a category**
 
 Input:
+
 ```
 delete
 food
@@ -437,7 +466,9 @@ transport
 1
 y
 ```
+
 Output:
+
 ```
 --------------------------------------------------
 delete
@@ -471,6 +502,7 @@ Now you have 1 expenses.
 ```
 
 ---
+
 ## View Expenses
 
 The `view` command lets you display your recorded expenses in different ways.
@@ -509,6 +541,7 @@ You can view all expenses, view a specific category, or optionally sort and filt
 `view all`
 
 Expected output:
+
 ```
 Here are your expenses:
 
@@ -528,6 +561,7 @@ Total expenditure: $70.00
 `view food`:
 
 Expected output:
+
 ```
 Here are your expenses:
 
@@ -558,7 +592,6 @@ Here are your expenses:
 Total expenditure: $70.00
 ```
 
-
 **Example 4: Viewing expenses by category and filtering by month**
 
 `view transport -filter march`
@@ -580,6 +613,7 @@ Total expenditure: $50.00
 `view transport -filter march -sort amount`
 
 Expected output:
+
 ```
 Here are your expenses:
 
@@ -595,6 +629,7 @@ Total expenditure: $70.00
 ```
 
 ### Notes
+
 - The categories are NOT case-sensitive so you can write `view Food` or `view food` to get the same output.
 - The month used with `-filter` is also case-insensitive, so `view transport -filter JANUARY` works.
 - `-filter` only accepts a month name, such as `January`.
@@ -606,7 +641,7 @@ Total expenditure: $70.00
 
 ## Setting the spending limit: `limit`
 
-Allows you to set a new monthly spending limit. 
+Allows you to set a new monthly spending limit.
 
 **Format** `limit <amount>`
 
@@ -617,7 +652,8 @@ Allows you to set a new monthly spending limit.
 
 **Example:** `limit 100`
 
-Output: 
+Output:
+
 ```
 Are you sure you want to change your monthly budget limit to $100.00? [yes/no]
 yes
@@ -651,6 +687,7 @@ Monthly budget limit: $100.00
 Allows you to modify your current monthly spending limit by increasing, decreasing, or replacing it.
 
 Simply type:
+
 ```
 edit limit
 ```
@@ -669,25 +706,26 @@ You will then be asked to confirm the change before the new limit is applied.
 
 ### Behaviour
 
-* **Increase limit**
-    * Adds the entered amount to the current limit.
-* **Decrease limit**
-    * Subtracts the entered amount from the current limit.
-    * The resulting limit **must not be negative**.
-* **Replace limit**
-    * Sets the current limit to a new value.
-* All inputs must be **valid non-negative numbers**.
-* The system will reject invalid menu selections or invalid numeric inputs.
+- **Increase limit**
+  - Adds the entered amount to the current limit.
+- **Decrease limit**
+  - Subtracts the entered amount from the current limit.
+  - The resulting limit **must not be negative**.
+- **Replace limit**
+  - Sets the current limit to a new value.
+- All inputs must be **valid non-negative numbers**.
+- The system will reject invalid menu selections or invalid numeric inputs.
 
-* For **Increase** / **Decrease**, the amount must be a **non-negative number**.
-  * Do not include a sign (e.g. use `5`, not `-5` or `+5`).
-  * If you enter a leading `+` (e.g. `+5`), Finbro will treat it as `5`.
+- For **Increase** / **Decrease**, the amount must be a **non-negative number**.
+  - Do not include a sign (e.g. use `5`, not `-5` or `+5`).
+  - If you enter a leading `+` (e.g. `+5`), Finbro will treat it as `5`.
 
 ### Examples
 
 **Example 1: Increase your limit**
 
 Input:
+
 ```
 edit limit
 1
@@ -696,6 +734,7 @@ yes
 ```
 
 Output:
+
 ```
 --------------------------------------------------
 edit limit
@@ -723,6 +762,7 @@ Monthly budget limit: $125.00
 **Example 2: Cancel an edit**
 
 Input:
+
 ```
 edit limit
 3
@@ -731,6 +771,7 @@ no
 ```
 
 Output:
+
 ```
 --------------------------------------------------
 edit limit
@@ -760,6 +801,7 @@ Monthly budget limit: $100.00
 **Example 3: Decrease your limit**
 
 Input:
+
 ```
 edit limit
 2
@@ -768,6 +810,7 @@ yes
 ```
 
 Output:
+
 ```
 --------------------------------------------------
 edit limit
@@ -807,11 +850,12 @@ If you enter a negative amount, Finbro will show an error and exit the `edit lim
 If you do not enter anything when asked for an amount, Finbro will show an error and exit the `edit limit` flow. Run `edit limit` again to retry.
 
 ---
+
 ## Budget Reminder System
 
-Finbro includes a budget reminder system that alerts you when your total expenses exceed your set monthly limit, 
+Finbro includes a budget reminder system that alerts you when your total expenses exceed your set monthly limit,
 or is close to exceeding the limit.  
-When you add a new expense, the system will check if the total expenditure for the current month differs by $20 
+When you add a new expense, the system will check if the total expenditure for the current month differs by $20
 or below with the limit, or exceeds the limit.
 If it does, a warning message will be displayed to inform you that you are close to exceeding your monthly budget,
 or have exceeded your budget for the month.
@@ -819,17 +863,19 @@ or have exceeded your budget for the month.
 ### Examples
 
 **Example 1: Close to limit warning**
-Suppose your monthly spending limit is set to \$100.00, and your total expenses for the current month have reached 
+Suppose your monthly spending limit is set to \$100.00, and your total expenses for the current month have reached
 \$85.00. The system will check the total expenditure (\$85.00) against the limit (\$100.00), and constantly prompt you
 with the following warning message until you add more expenses or edit your limit:
+
 ```
 Warning: You are close to your monthly spending limit of $100.00!
 ```
 
 **Example 2: Exceeded limit warning**
-Suppose your monthly spending limit is set to \$100.00, and your total expenses for the current month have reached 
-\$120.00. The system will check the total expenditure (\$120.00) against the limit (\$100.00), and constantly prompt 
+Suppose your monthly spending limit is set to \$100.00, and your total expenses for the current month have reached
+\$120.00. The system will check the total expenditure (\$120.00) against the limit (\$100.00), and constantly prompt
 you with the following warning message until you add more expenses or edit your limit:
+
 ```
 Warning: You have exceeded your monthly spending limit of $100.00!
 ```
@@ -845,6 +891,7 @@ Allows you to convert an existing expense into another currency using predefined
 You must already have at least one recorded expense before using this command.
 
 Simply type:
+
 ```
 currency
 ```
@@ -872,18 +919,19 @@ The system will ask you for:
 
 ### Behaviour
 
-* Uses a **local currency rate table** (no internet connection required).
-* Supports the following currencies: `SGD`, `USD`, `EUR`, `GBP`, `JPY`, `CNY`, `AUD`, `CAD`, `MYR`, `HKD`, `KRW`.
-* You must have at least one recorded expense before conversion can begin.
-* The selected expense must exist in the displayed list.
-* The converted value is displayed but does not modify the original expense.
-* If the source and target currencies are the same and both are supported, Finbro will tell you that no conversion is needed.
+- Uses a **local currency rate table** (no internet connection required).
+- Supports the following currencies: `SGD`, `USD`, `EUR`, `GBP`, `JPY`, `CNY`, `AUD`, `CAD`, `MYR`, `HKD`, `KRW`.
+- You must have at least one recorded expense before conversion can begin.
+- The selected expense must exist in the displayed list.
+- The converted value is displayed but does not modify the original expense.
+- If the source and target currencies are the same and both are supported, Finbro will tell you that no conversion is needed.
 
 ### Examples
 
 **Example 1: Convert an expense from SGD to USD**
 
 Input:
+
 ```
 currency
 SGD
@@ -892,6 +940,7 @@ USD
 ```
 
 Output:
+
 ```
 --------------------------------------------------
 currency
@@ -925,6 +974,7 @@ Expense #1
 **Example 2: Source and target currencies are the same**
 
 Input:
+
 ```
 currency
 USD
@@ -932,6 +982,7 @@ USD
 ```
 
 Output:
+
 ```
 --------------------------------------------------
 currency
@@ -948,6 +999,7 @@ Source and target currencies are both USD. No conversion needed.
 **Example 3: Convert an expense from USD to CNY**
 
 Input:
+
 ```
 currency
 USD
@@ -956,6 +1008,7 @@ CNY
 ```
 
 Output:
+
 ```
 --------------------------------------------------
 currency
@@ -1011,6 +1064,7 @@ Allows you to view a visualization of your monthly spendings.
 **Format:** `visual`
 
 **Example Output:**
+
 ```
 --------------------------------------------------
 === Monthly Spendings ===
@@ -1020,7 +1074,9 @@ Mar 2026 | ████████████████████ $50.00
 Apr 2026 | ██                   $5.00
 --------------------------------------------------
 ```
+
 ---
+
 ## Exit: `exit`
 
 Exits the Finbro application. Your expenses and settings are saved automatically before the program closes.
@@ -1028,11 +1084,13 @@ Exits the Finbro application. Your expenses and settings are saved automatically
 **Format:** `exit`
 
 **Example Output:**
+
 ```
 --------------------------------------------------
 Bye! See you again.
 --------------------------------------------------
 ```
+
 ---
 
 ## FAQ
