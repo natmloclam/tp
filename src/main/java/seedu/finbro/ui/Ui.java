@@ -223,6 +223,13 @@ public class Ui {
         showLine();
     }
 
+    //@@author natmloclam
+    public void showUninitializedLimit() {
+        showLine();
+        System.out.println("Warning: Monthly budget limit not initialized");
+        showLine();
+    }
+
     //@@author Kushalshah0402
     public void showLine() {
         System.out.println(LINE);

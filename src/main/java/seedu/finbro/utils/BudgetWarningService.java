@@ -27,6 +27,11 @@ public class BudgetWarningService {
             return;
         }
 
+        if (Limit.getLimit() == 0) {
+            ui.showUninitializedLimit();
+            return;
+        }
+
         double monthlyTotal = expenses.getCurrentMonthTotalExpenditure();
         double limit = Limit.getLimit();
         logger.log(Level.INFO, "Monthly Total Expenditure: " + monthlyTotal);
