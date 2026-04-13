@@ -49,67 +49,115 @@ public class AddCommand extends Command {
         String category;
         String formattedDate;
 
-        // AMOUNT LOOP
         while (true) {
-            ui.showEnterAmountPrompt();
-            String input = ui.readCommand();
-            try {
-                amount = Double.parseDouble(input);
-                if (amount <= 0) {
-                    logger.log(Level.WARNING, "Invalid amount entered: non-positive");
-                    ui.showInlineError("Amount must be a positive number.");
+
+            // AMOUNT LOOP
+            while (true) {
+                ui.showEnterAmountPrompt();
+                String input = ui.readCommand();
+
+                if (input == null) {
+                    logger.log(Level.WARNING, "UI returned null while reading amount input");
+                    return;
+                }
+
+                input = input.trim();
+
+                if (input.equalsIgnoreCase("-exit")) {
+                    logger.log(Level.INFO, "User exited add walkthrough");
+                    ui.showExitAddMessage();
+                    return;
+                }
+
+                try {
+                    amount = Double.parseDouble(input);
+                    if (amount <= 0) {
+                        logger.log(Level.WARNING, "Invalid amount entered: non-positive");
+                        ui.showInlineError("Amount must be a positive number.");
+                        continue;
+                    }
+                    logger.log(Level.INFO, "Valid amount entered: " + amount);
+                    break;
+                } catch (NumberFormatException e) {
+                    logger.log(Level.WARNING, "Invalid amount entered: not a number");
+                    ui.showInlineError("Please enter numbers only.");
+                }
+            }
+
+            // CATEGORY LOOP
+            while (true) {
+                ui.showEnterCategoryPrompt();
+                category = ui.readCommand();
+
+                if (category == null) {
+                    logger.log(Level.WARNING, "UI returned null while reading category input");
+                    return;
+                }
+
+                category = category.trim();
+
+                if (category.equalsIgnoreCase("-exit")) {
+                    logger.log(Level.INFO, "User exited add walkthrough");
+                    ui.showExitAddMessage();
+                    return;
+                }
+
+                if (category.equalsIgnoreCase("-back")) {
+                    logger.log(Level.INFO, "User returned to amount input");
+                    break; // breaks CATEGORY LOOP → outer while → re-prompts amount
+                }
+
+                try {
+                    verifyCategory(category);
+                    logger.log(Level.INFO, "Valid category entered: " + category);
+                } catch (FinbroException e) {
+                    logger.log(Level.WARNING, "Invalid category entered: " + category);
+                    ui.showInlineError(e.getMessage());
                     continue;
                 }
-                logger.log(Level.INFO, "Valid amount entered: " + amount);
-                break;
-            } catch (NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid amount entered: not a number");
-                ui.showInlineError("Please enter numbers only.");
+
+                // DATE LOOP
+                while (true) {
+                    ui.showEnterDatePrompt();
+                    String dateInput = ui.readCommand();
+
+                    if (dateInput == null) {
+                        logger.log(Level.WARNING, "UI returned null while reading date input");
+                        return;
+                    }
+
+                    dateInput = dateInput.trim();
+
+                    if (dateInput.equalsIgnoreCase("-exit")) {
+                        logger.log(Level.INFO, "User exited add walkthrough");
+                        ui.showExitAddMessage();
+                        return;
+                    }
+
+                    if (dateInput.equalsIgnoreCase("-back")) {
+                        logger.log(Level.INFO, "User returned to category input");
+                        break;
+                    }
+
+                    try {
+                        LocalDate parsedDate = NaturalDateParser.parse(dateInput);
+                        validateDateRange(parsedDate);
+                        formattedDate = parsedDate.format(
+                                DateTimeFormatter.ofPattern("d MMMM yyyy")
+                        );
+                        logger.log(Level.INFO, "Valid date entered: " + formattedDate);
+                        confirmAndAdd(expenses, ui, amount, category, formattedDate);
+                        return;
+                    } catch (FinbroException e) {
+                        logger.log(Level.WARNING, "Invalid date entered: " + dateInput);
+                        ui.showInlineError(e.getMessage());
+                    }
+                }
             }
         }
-
-        // CATEGORY LOOP
-        while (true) {
-            ui.showEnterCategoryPrompt();
-            category = ui.readCommand();
-
-            if (category.isBlank()) {
-                logger.log(Level.WARNING, "Empty category entered");
-                ui.showInlineError("Category cannot be empty.");
-                continue;
-            }
-
-            // Disallow numeric-only categories (e.g. "123"). Multi-word categories are allowed.
-            if (isNumericOnly(category)) {
-                logger.log(Level.WARNING, "Invalid category entered (numeric-only): " + category);
-                ui.showInlineError("Category cannot be a number.");
-                continue;
-            }
-            logger.log(Level.INFO, "Valid category entered: " + category);
-            break;
-        }
-
-        // DATE LOOP
-        while (true) {
-            ui.showEnterDatePrompt();
-            String dateInput = ui.readCommand();
-            try {
-                LocalDate parsedDate = NaturalDateParser.parse(dateInput);
-                validateDateRange(parsedDate);
-                formattedDate = parsedDate.format(
-                        DateTimeFormatter.ofPattern("d MMMM yyyy")
-                );
-                logger.log(Level.INFO, "Valid date entered: " + formattedDate);
-                break;
-            } catch (FinbroException e) {
-                logger.log(Level.WARNING, "Invalid date entered: " + dateInput);
-                ui.showInlineError(e.getMessage());
-            }
-        }
-
-        confirmAndAdd(expenses, ui, amount, category, formattedDate);
     }
 
+    //@@author Kushalshah0402
     private void confirmAndAdd(ExpenseList expenses, Ui ui, double amount, String category, String formattedDate) {
         logger.log(Level.INFO,
                 "Attempting to add expense amount {0}, category {1}, date {2}",
@@ -139,12 +187,14 @@ public class AddCommand extends Command {
         ui.showExpenseAdded(expense, expenses.size());
     }
 
+    //@@author Kushalshah0402
     private static boolean confirmExpense(Ui ui, Expense expense) {
         ui.showConfirmExpense(expense);
         String confirm = ui.readCommand().trim();
-        return confirm.equalsIgnoreCase("yes");
+        return confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("y");
     }
 
+    //@@author Kushalshah0402
     private static boolean confirmHighValue(Ui ui, double amount) {
         System.out.println(
                 "Since the expense amount is huge, we would like to double confirm an expense for $"
@@ -152,11 +202,13 @@ public class AddCommand extends Command {
         );
         System.out.println("Do you still want to proceed? [yes/no]");
         String finalConfirm = ui.readCommand().trim();
-        return finalConfirm.equalsIgnoreCase("yes");
+        return finalConfirm.equalsIgnoreCase("yes") || finalConfirm.equalsIgnoreCase("y");
     }
 
+    //@@author Kushalshah0402
     private record ParsedAddInput(double amount, String category, String formattedDate) { }
 
+    //@@author Kushalshah0402
     private static ParsedAddInput parseStrictInput(String input) throws FinbroException {
         logger.log(Level.INFO, "Parsing strict add input: " + input);
         String[] parts = input.trim().split("\\s+");
@@ -173,8 +225,10 @@ public class AddCommand extends Command {
         return new ParsedAddInput(amount, category, parsedDate.formattedDate());
     }
 
+    //@@author Kushalshah0402
     private record ParsedDate(int dateStartIndex, String formattedDate) { }
 
+    //@@author Kushalshah0402
     private static ParsedDate parseDateFromSuffix(String[] parts) throws FinbroException {
         // Choose the shortest date suffix that parses, to maximize category tokens.
         for (int i = parts.length - 1; i >= 2; i--) {
@@ -195,6 +249,7 @@ public class AddCommand extends Command {
         throw new FinbroException("Invalid date.");
     }
 
+    //@@author Kushalshah0402
     private static double parseAmountToken(String token) throws FinbroException {
         try {
             double amount = Double.parseDouble(token);
@@ -207,17 +262,16 @@ public class AddCommand extends Command {
         }
     }
 
+    //@@author Kushalshah0402
     private static void verifyCategory(String category) throws FinbroException {
         if (category == null || category.isBlank()) {
             throw new FinbroException("Category cannot be empty.");
         }
-        if (isNumericOnly(category)) {
-            throw new FinbroException("Category cannot be a number.");
-        }
-    }
 
-    private static boolean isNumericOnly(String input) {
-        return input != null && input.trim().matches("\\d+");
+        // Must contain at least one letter
+        if (!category.matches(".*[a-zA-Z].*")) {
+            throw new FinbroException("Category must contain at least one letter.");
+        }
     }
 
     //@author Kushalshah0402
@@ -246,5 +300,10 @@ public class AddCommand extends Command {
                 Note: amount must be positive.
                       Category can be multiple words but cannot be only numbers.
                       Date supports natural language (e.g. today, 2 days ago).""";
+    }
+
+    @Override
+    public boolean checksBudget() {
+        return true;
     }
 }

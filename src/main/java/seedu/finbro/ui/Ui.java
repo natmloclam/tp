@@ -62,6 +62,11 @@ public class Ui {
         System.out.println("Successfully exit the delete command.");
         showLine();
     }
+    public void showExitAddMessage() {
+        showLine();
+        System.out.println("Successfully exit the add command.");
+        showLine();
+    }
     //@@author zihaoalt
     public void showCategoryExpenses(String category, List<Expense> expenses) {
         for (int i = 0; i < expenses.size(); i++) {

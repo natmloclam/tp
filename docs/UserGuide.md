@@ -10,7 +10,8 @@
   - [Delete Expense Command](#delete-expense-command)
   - [View Expenses](#view-expenses)
   - [Setting the spending limit](#setting-the-spending-limit-limit)
-  - [Editing the spending limit](#editing-the-spending-limit-edit-limit)
+  - [Viewing the spending limit](#viewing-the-spending-limit-limit)
+  - [Editing the spending limit](#editing-the-spending-limit)
   - [Budget Reminder System](#budget-reminder-system)
   - [Converting expense currency](#converting-expense-currency-currency)
   - [Visualization](#visualization-visual)
@@ -96,7 +97,7 @@ add <amount> <category> <date>
 | Field        | Format           | Example                                                     |
 | ------------ | ---------------- | ----------------------------------------------------------- |
 | **Amount**   | Positive number  | `50.00` or `25`                                             |
-| **Category** | Text (no spaces) | `Groceries`                                                 |
+| **Category** | Text | `Groceries`                                                 |
 | **Date**     | YYYY-MM-DD       | `2026-01-20` or `today, last week, 2 days ago, last monday` |
 
 **Example:**
@@ -104,8 +105,7 @@ add <amount> <category> <date>
 ```
 add 50.00 Groceries 2026-01-20
 ```
-
-- Type `yes` to confirm or `no` to cancel
+- Type `yes` to confirm or `no` to cancel (shortcuts `y` and `n` are also accepted)
 
 ### Walkthrough Mode
 
@@ -121,6 +121,7 @@ The system will ask you for:
 
 1. **Expense Amount**
    - The application will prompt: `What is the expense amount?`
+   - Enter `-exit` to cancel adding an expense in walkthrough mode.
    - Enter the amount you spent.
    - The amount must be a positive number greater than 0.
    - The value will be rounded to 2 decimal places.
@@ -131,6 +132,8 @@ The system will ask you for:
    - Enter the expense category.
    - The category name may contain multiple words but must not be purely numeric.
    - Examples: `Food`, `Transport`, `Entertainment`, `Shopping`
+   - Enter `-exit` to cancel adding an expense in walkthrough mode.
+   - Enter `-back` to re-enter the amount.
 
 3. **Expense Date**
    - The application will prompt: `Enter the date (yyyy-MM-dd or today):`
@@ -144,10 +147,12 @@ The system will ask you for:
      - `last <day-of-week>` (e.g., `last monday`)
    - Note: inputs like `tomorrow`, `next week`, `next monday`, and `<N> days later` may be understood, but will be rejected for `add` because future dates are not allowed.
    - Use the format shown above.
+   - Enter `-exit` to cancel adding an expense in walkthrough mode.
+   - Enter `-back` to re-enter the category.
 
 4. **Confirmation**
    - Review your entry
-   - Type `yes` to confirm or `no` to cancel
+   - Type `yes` to confirm or `no` to cancel (shortcuts `y` and `n` are also accepted)
 
 ### Examples
 
@@ -255,7 +260,7 @@ Now you have 3 expenses.
 **❌ Error: "Amount must be a positive number"**
 
 - Make sure you entered a valid number
-- Negative numbers are not allowed
+- Amount less than and equal to 0 are not allowed
 - Decimal numbers are okay (e.g., `12.50`)
 
 **❌ Error: "Invalid date format"**
@@ -266,8 +271,9 @@ Now you have 3 expenses.
 
 **❌ Error: "Category cannot be empty"**
 
-- Enter a category name (no purely numeric entry)
-- Valid Examples: `Food`, `Transport`, `Rent`, `Entertainment`
+- Enter a category name (no purely numeric or purely special character entry)
+- Valid Examples: `Food & Drinks`, `Transport`, `Rent`, `Entertainment`
+
 
 **❌ "I made a mistake"**
 
@@ -295,6 +301,7 @@ delete <category> <index>
 | ------------ | ---------------- | ----------- |
 | **category** | Text (no spaces) | `Groceries` |
 | **Index**    | Positive Number  | 1           |
+
 
 **Example:**
 
@@ -650,6 +657,24 @@ Output:
 ```
 Are you sure you want to change your monthly budget limit to $100.00? [yes/no]
 yes
+--------------------------------------------------
+Monthly budget limit: $100.00
+--------------------------------------------------
+```
+
+---
+
+## Viewing the spending limit: `limit`
+
+Allows you to view your current monthly spending limit.
+
+**Format** `limit`
+
+- `limit` must take no arguments
+
+**Example:** `limit`
+Output:
+```
 --------------------------------------------------
 Monthly budget limit: $100.00
 --------------------------------------------------
@@ -1093,18 +1118,19 @@ current limit unchanged.
 
 ## Command Summary
 
-| Command    | Format                                            | Description                                                     |
-| ---------- | ------------------------------------------------- | --------------------------------------------------------------- |
-| Add        | `add <amount> <category> <date>`                  | Adds a new expense (direct input)                               |
-| Add        | `add`                                             | Adds a new expense (guided input)                               |
-| View       | `view all` with optional `-sort`                  | Displays all expenses with optional sorting                     |
-| View       | `view <category>` with optional `-sort`/`-filter` | Displays a category of expenses with optional sorting/filtering |
-| Delete     | `delete <category> <index>`                       | Deletes an expense (direct input)                               |
-| Delete     | `delete`                                          | Deletes an expense (guided input)                               |
-| Set Limit  | `limit`                                           | Sets a monthly spending limit                                   |
-| Edit Limit | `edit limit`                                      | Edits the current spending limit                                |
-| Currency   | `currency`                                        | Converts expense currency                                       |
-| Visualize  | `visual`                                          | Shows a bar chart of monthly expenses                           |
-| Help       | `help`                                            | Shows help information                                          |
-| Help       | `help <command>`                                  | Shows detailed help for a specific command                      |
-| Exit       | `exit`                                            | Exits Finbro                                                    |
+| Command        | Format                                            | Description                                                     |
+|----------------|---------------------------------------------------|-----------------------------------------------------------------|
+| Add Expense    | `add <amount> <category> <date>`                  | Adds a new expense (direct input)                               |
+| Add Expense    | `add`                                             | Adds a new expense (guided input)                               |
+| View Expense   | `view all` with optional `-sort`                  | Displays all expenses with optional sorting                     |
+| View Expense   | `view <category>` with optional `-sort`/`-filter` | Displays a category of expenses with optional sorting/filtering |
+| Delete Expense | `delete <category> <index>`                       | Deletes an expense (direct input)                               |
+| Delete Expense | `delete`                                          | Deletes an expense (guided input)                               |
+| Set Limit      | `limit <amount>`                                  | Sets a monthly spending limit                                   |
+| View Limit     | `limit`                                           | Displays the monthly spending limit                             |
+| Edit Limit     | `edit limit`                                      | Edits the current spending limit                                |
+| Currency       | `currency`                                        | Converts expense currency                                       |
+| Visualize      | `visual`                                          | Shows a bar chart of monthly expenses                           |
+| Help           | `help`                                            | Shows help information                                          |
+| Help           | `help <command>`                                  | Shows detailed help for a specific command                      |
+| Exit           | `exit`                                            | Exits Finbro                                                    |
