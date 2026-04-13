@@ -917,6 +917,47 @@ Source and target currencies are both USD. No conversion needed.
 --------------------------------------------------
 ```
 
+**Example 3: Convert an expense from USD to CNY**
+
+Input:
+```
+currency
+USD
+CNY
+2
+```
+
+Output:
+```
+--------------------------------------------------
+currency
+--------------------------------------------------
+Enter source currency:
+USD
+Enter target currency:
+CNY
+--------------------------------------------------
+Here are your expenses:
+
+1. Amount: $10.00
+   Category: food
+   Date: 1 January 2026
+
+2. Amount: $20.00
+   Category: transport
+   Date: 2 January 2026
+
+Total expenditure: $30.00
+--------------------------------------------------
+Which expense entry would you like to convert?
+--------------------------------------------------
+2
+--------------------------------------------------
+Expense #2
+20.00 USD = 143.40 CNY
+--------------------------------------------------
+```
+
 ### Common Issues
 
 **Issue: Entering an unsupported currency**
@@ -926,6 +967,10 @@ If you enter a currency code that Finbro does not support, Finbro will show an e
 **Issue: Entering an invalid expense index**
 
 If you enter a non-numeric index or a number outside the displayed list, Finbro will show an error and the conversion will not proceed.
+
+**Issue: Converted values do not match live exchange rates**
+
+Finbro uses **offline, locally stored conversion rates** for the `currency` command. The converted amount is meant for quick reference and may differ from real-time market exchange rates.
 
 ---
 
