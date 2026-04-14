@@ -43,8 +43,6 @@ harder to enter invalid values.
 - `src/main/java/seedu/finbro/parser/Parser.java`
 - `src/main/java/seedu/finbro/ui/Ui.java`
 
-**Diagram:** ![Edit Limit Sequence Diagram](../UML_diagrams/images/EditLimit.png)
-
 ---
 
 ### 2. Currency Conversion Command (`currency`)
@@ -72,7 +70,7 @@ feature gives quick offline conversion results without relying on an external AP
 - `src/main/java/seedu/finbro/utils/CurrencyRateTable.java`
 - `src/main/java/seedu/finbro/ui/Ui.java`
 
-**Diagram:** ![Currency Command Sequence Diagram](../UML_diagrams/images/CurrencyCommand.png)
+![Currency Command Sequence Diagram](../UML_diagrams/images/CurrencyCommand.png)
 
 ---
 
@@ -129,8 +127,8 @@ Contributed documentation for:
 ### Developer Guide
 
 Contributed documentation for:
-- `edit limit` command flow and validation design considerations
-- Currency conversion design (base-currency mapping, workflow, and error handling)
+- `edit limit` command flow and validation design considerations with sequence of action diagram
+- Currency conversion design (base-currency mapping, workflow, and error handling) with sequence of action diagram
 - Natural date parsing approach (`LocalDate`, regex patterns, and invalid-input handling)
 
 ---
@@ -143,3 +141,19 @@ Contributed documentation for:
 - Contributed to refining user interaction flows to reduce user error
 
 ---
+
+## Bug Identification (During PE Dry Run)
+
+During the PE dry run, I helped to identify **10 bugs** in the other group's product that I was evaluating. This includes functional bugs, feature flaws, as well as documentation bugs.
+
+**Image showing PE-D bugs identified:** ![Zaixi PE-D reported bugs](../UML_diagrams/images/Zaxi_PE_reported_bugs.png)
+
+---
+
+## Bug Fixing (Post PE Dry Run)
+
+After the first PE dry run, I analysed incoming PE-D reports and focused on fixing issues that affected user-facing flows
+and documentation clarity. This included fixes and doc updates around interactive command sessions (e.g., `edit limit`)
+and improving the alignment between error messages and documented behaviour.
+
+**Image showing closed issues after PE dry run:** ![Zaixi bug fixes after PE dry run](../UML_diagrams/images/Zaixi_bug_fix.png)
